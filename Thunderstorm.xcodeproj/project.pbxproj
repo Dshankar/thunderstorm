@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F9ABA99B1955AC220019C064 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99A1955AC220019C064 /* Foundation.framework */; };
+		F9ABA99D1955AC220019C064 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99C1955AC220019C064 /* CoreGraphics.framework */; };
+		F9ABA99F1955AC220019C064 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99E1955AC220019C064 /* UIKit.framework */; };
+		F9ABA9A51955AC220019C064 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9A31955AC220019C064 /* InfoPlist.strings */; };
+		F9ABA9A71955AC220019C064 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9A61955AC220019C064 /* main.m */; };
+		F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9AA1955AC220019C064 /* AppDelegate.m */; };
+		F9ABA9AD1955AC220019C064 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9AC1955AC220019C064 /* Images.xcassets */; };
+		F9ABA9B41955AC230019C064 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA9B31955AC230019C064 /* XCTest.framework */; };
+		F9ABA9B51955AC230019C064 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99A1955AC220019C064 /* Foundation.framework */; };
+		F9ABA9B61955AC230019C064 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99E1955AC220019C064 /* UIKit.framework */; };
+		F9ABA9BE1955AC230019C064 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9BC1955AC230019C064 /* InfoPlist.strings */; };
+		F9ABA9C01955AC230019C064 /* ThunderstormTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F9ABA9B71955AC230019C064 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9ABA98F1955AC220019C064 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9ABA9961955AC220019C064;
+			remoteInfo = Thunderstorm;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F9ABA9971955AC220019C064 /* Thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9ABA99A1955AC220019C064 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F9ABA99C1955AC220019C064 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F9ABA99E1955AC220019C064 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F9ABA9A21955AC220019C064 /* Thunderstorm-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Thunderstorm-Info.plist"; sourceTree = "<group>"; };
+		F9ABA9A41955AC220019C064 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F9ABA9A61955AC220019C064 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F9ABA9A81955AC220019C064 /* Thunderstorm-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Thunderstorm-Prefix.pch"; sourceTree = "<group>"; };
+		F9ABA9A91955AC220019C064 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F9ABA9AA1955AC220019C064 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F9ABA9AC1955AC220019C064 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F9ABA9B21955AC230019C064 /* ThunderstormTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThunderstormTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9ABA9B31955AC230019C064 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F9ABA9BB1955AC230019C064 /* ThunderstormTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ThunderstormTests-Info.plist"; sourceTree = "<group>"; };
+		F9ABA9BD1955AC230019C064 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThunderstormTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F9ABA9941955AC220019C064 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA99D1955AC220019C064 /* CoreGraphics.framework in Frameworks */,
+				F9ABA99F1955AC220019C064 /* UIKit.framework in Frameworks */,
+				F9ABA99B1955AC220019C064 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9ABA9AF1955AC230019C064 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA9B41955AC230019C064 /* XCTest.framework in Frameworks */,
+				F9ABA9B61955AC230019C064 /* UIKit.framework in Frameworks */,
+				F9ABA9B51955AC230019C064 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F9ABA98E1955AC220019C064 = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9A01955AC220019C064 /* Thunderstorm */,
+				F9ABA9B91955AC230019C064 /* ThunderstormTests */,
+				F9ABA9991955AC220019C064 /* Frameworks */,
+				F9ABA9981955AC220019C064 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F9ABA9981955AC220019C064 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9971955AC220019C064 /* Thunderstorm.app */,
+				F9ABA9B21955AC230019C064 /* ThunderstormTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F9ABA9991955AC220019C064 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA99A1955AC220019C064 /* Foundation.framework */,
+				F9ABA99C1955AC220019C064 /* CoreGraphics.framework */,
+				F9ABA99E1955AC220019C064 /* UIKit.framework */,
+				F9ABA9B31955AC230019C064 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F9ABA9A01955AC220019C064 /* Thunderstorm */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9A91955AC220019C064 /* AppDelegate.h */,
+				F9ABA9AA1955AC220019C064 /* AppDelegate.m */,
+				F9ABA9AC1955AC220019C064 /* Images.xcassets */,
+				F9ABA9A11955AC220019C064 /* Supporting Files */,
+			);
+			path = Thunderstorm;
+			sourceTree = "<group>";
+		};
+		F9ABA9A11955AC220019C064 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9A21955AC220019C064 /* Thunderstorm-Info.plist */,
+				F9ABA9A31955AC220019C064 /* InfoPlist.strings */,
+				F9ABA9A61955AC220019C064 /* main.m */,
+				F9ABA9A81955AC220019C064 /* Thunderstorm-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F9ABA9B91955AC230019C064 /* ThunderstormTests */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */,
+				F9ABA9BA1955AC230019C064 /* Supporting Files */,
+			);
+			path = ThunderstormTests;
+			sourceTree = "<group>";
+		};
+		F9ABA9BA1955AC230019C064 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F9ABA9BB1955AC230019C064 /* ThunderstormTests-Info.plist */,
+				F9ABA9BC1955AC230019C064 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F9ABA9961955AC220019C064 /* Thunderstorm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9ABA9C31955AC230019C064 /* Build configuration list for PBXNativeTarget "Thunderstorm" */;
+			buildPhases = (
+				F9ABA9931955AC220019C064 /* Sources */,
+				F9ABA9941955AC220019C064 /* Frameworks */,
+				F9ABA9951955AC220019C064 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Thunderstorm;
+			productName = Thunderstorm;
+			productReference = F9ABA9971955AC220019C064 /* Thunderstorm.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F9ABA9B11955AC230019C064 /* ThunderstormTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9ABA9C61955AC230019C064 /* Build configuration list for PBXNativeTarget "ThunderstormTests" */;
+			buildPhases = (
+				F9ABA9AE1955AC230019C064 /* Sources */,
+				F9ABA9AF1955AC230019C064 /* Frameworks */,
+				F9ABA9B01955AC230019C064 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F9ABA9B81955AC230019C064 /* PBXTargetDependency */,
+			);
+			name = ThunderstormTests;
+			productName = ThunderstormTests;
+			productReference = F9ABA9B21955AC230019C064 /* ThunderstormTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F9ABA98F1955AC220019C064 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Darshan Shankar";
+				TargetAttributes = {
+					F9ABA9B11955AC230019C064 = {
+						TestTargetID = F9ABA9961955AC220019C064;
+					};
+				};
+			};
+			buildConfigurationList = F9ABA9921955AC220019C064 /* Build configuration list for PBXProject "Thunderstorm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F9ABA98E1955AC220019C064;
+			productRefGroup = F9ABA9981955AC220019C064 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F9ABA9961955AC220019C064 /* Thunderstorm */,
+				F9ABA9B11955AC230019C064 /* ThunderstormTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F9ABA9951955AC220019C064 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA9A51955AC220019C064 /* InfoPlist.strings in Resources */,
+				F9ABA9AD1955AC220019C064 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9ABA9B01955AC230019C064 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA9BE1955AC230019C064 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F9ABA9931955AC220019C064 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */,
+				F9ABA9A71955AC220019C064 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9ABA9AE1955AC230019C064 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ABA9C01955AC230019C064 /* ThunderstormTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F9ABA9B81955AC230019C064 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9ABA9961955AC220019C064 /* Thunderstorm */;
+			targetProxy = F9ABA9B71955AC230019C064 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F9ABA9A31955AC220019C064 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F9ABA9A41955AC220019C064 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F9ABA9BC1955AC230019C064 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F9ABA9BD1955AC230019C064 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F9ABA9C11955AC230019C064 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		F9ABA9C21955AC230019C064 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F9ABA9C41955AC230019C064 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
+				INFOPLIST_FILE = "Thunderstorm/Thunderstorm-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F9ABA9C51955AC230019C064 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
+				INFOPLIST_FILE = "Thunderstorm/Thunderstorm-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		F9ABA9C71955AC230019C064 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Thunderstorm.app/Thunderstorm";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ThunderstormTests/ThunderstormTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		F9ABA9C81955AC230019C064 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Thunderstorm.app/Thunderstorm";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
+				INFOPLIST_FILE = "ThunderstormTests/ThunderstormTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F9ABA9921955AC220019C064 /* Build configuration list for PBXProject "Thunderstorm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9ABA9C11955AC230019C064 /* Debug */,
+				F9ABA9C21955AC230019C064 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9ABA9C31955AC230019C064 /* Build configuration list for PBXNativeTarget "Thunderstorm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9ABA9C41955AC230019C064 /* Debug */,
+				F9ABA9C51955AC230019C064 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F9ABA9C61955AC230019C064 /* Build configuration list for PBXNativeTarget "ThunderstormTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9ABA9C71955AC230019C064 /* Debug */,
+				F9ABA9C81955AC230019C064 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F9ABA98F1955AC220019C064 /* Project object */;
+}
