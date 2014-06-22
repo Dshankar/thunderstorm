@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "WriterController.h"
 
 @implementation AppDelegate
 
@@ -14,8 +15,14 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    WriterController *writer = [[WriterController alloc] initWithNibName:nil bundle:nil];
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];
+    [navigation.navigationBar setBarTintColor:[UIColor whiteColor]];
+    self.window.rootViewController = navigation;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

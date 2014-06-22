@@ -19,6 +19,9 @@
 		F9ABA9B61955AC230019C064 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99E1955AC220019C064 /* UIKit.framework */; };
 		F9ABA9BE1955AC230019C064 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9BC1955AC230019C064 /* InfoPlist.strings */; };
 		F9ABA9C01955AC230019C064 /* ThunderstormTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */; };
+		F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CA1955AC4D0019C064 /* WriterController.m */; };
+		F9ABA9CD195649C40019C064 /* CrimsonText-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */; };
+		F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +51,11 @@
 		F9ABA9BB1955AC230019C064 /* ThunderstormTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ThunderstormTests-Info.plist"; sourceTree = "<group>"; };
 		F9ABA9BD1955AC230019C064 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThunderstormTests.m; sourceTree = "<group>"; };
+		F9ABA9C91955AC4D0019C064 /* WriterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriterController.h; sourceTree = "<group>"; };
+		F9ABA9CA1955AC4D0019C064 /* WriterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterController.m; sourceTree = "<group>"; };
+		F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
+		F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyntaxHighlightTextStorage.h; sourceTree = "<group>"; };
+		F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyntaxHighlightTextStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +119,10 @@
 				F9ABA9AA1955AC220019C064 /* AppDelegate.m */,
 				F9ABA9AC1955AC220019C064 /* Images.xcassets */,
 				F9ABA9A11955AC220019C064 /* Supporting Files */,
+				F9ABA9C91955AC4D0019C064 /* WriterController.h */,
+				F9ABA9CA1955AC4D0019C064 /* WriterController.m */,
+				F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */,
+				F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */,
 			);
 			path = Thunderstorm;
 			sourceTree = "<group>";
@@ -118,6 +130,7 @@
 		F9ABA9A11955AC220019C064 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */,
 				F9ABA9A21955AC220019C064 /* Thunderstorm-Info.plist */,
 				F9ABA9A31955AC220019C064 /* InfoPlist.strings */,
 				F9ABA9A61955AC220019C064 /* main.m */,
@@ -221,6 +234,7 @@
 			files = (
 				F9ABA9A51955AC220019C064 /* InfoPlist.strings in Resources */,
 				F9ABA9AD1955AC220019C064 /* Images.xcassets in Resources */,
+				F9ABA9CD195649C40019C064 /* CrimsonText-Roman.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +253,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */,
 				F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */,
+				F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */,
 				F9ABA9A71955AC220019C064 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
