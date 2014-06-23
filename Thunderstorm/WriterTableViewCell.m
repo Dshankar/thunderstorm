@@ -31,7 +31,7 @@
         [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]];
         [tweetId setTextColor:[UIColor colorWithRed:(190.0/255) green:(196.0/255) blue:(205.0/255) alpha:1.0]];
         
-        numberOfLines = (self.textView.contentSize.height / self.textView.font.lineHeight) - 1 ;
+//        numberOfLines = (self.textView.contentSize.height / self.textView.font.lineHeight) - 1 ;
         [self.textView addSubview:tweetId];
     }
     return self;
@@ -68,27 +68,12 @@
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
     
-    textView.delegate = self;
+//    textView.delegate = self;
     
     UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,20,20)];
     textView.textContainer.exclusionPaths = @[exclusionPath];
     
     [self.contentView addSubview:textView];
 }
-
-//- (void)textViewDidChange:(UITextView *)tv
-//{
-//    numberOfLines = (tv.contentSize.height / tv.font.lineHeight) - 1 ;
-//    
-//    float height = 44.0;
-//    height += (tv.font.lineHeight * (numberOfLines - 1));
-//    
-//    CGRect tvFrame = [tv frame];
-//    tvFrame.size.height = height - 10.0;
-//    [tv setFrame:tvFrame];
-//    
-//    
-//}
-
 
 @end

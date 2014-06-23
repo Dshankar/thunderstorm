@@ -15,8 +15,11 @@
 @implementation WriterTableViewController
 {
     UIBarButtonItem* _publishButton;
+    NSString* _DEFAULT_TWEET_PROMPT;
 }
 @synthesize tweetData;
+@synthesize tweetNumberOfLines;
+
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -24,6 +27,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
         
         _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         [_publishButton setTintColor:[UIColor grayColor]];
@@ -47,8 +51,9 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     self.tableView.rowHeight = 165;
-    self.tweetData = [[NSArray alloc] initWithObjects:@"Why print out pages of unreadable stacktraces that are useless to most programmers? Memory addresses don't help me debug such errors.", @"What's on your mind?", nil];
-    
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Why print out pages of unreadable stacktraces that are useless to most programmers? Memory addresses don't help me debug such errors.", _DEFAULT_TWEET_PROMPT, nil];
+
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:5], [NSNumber numberWithInt:1], nil];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -93,6 +98,8 @@
     WriterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(cell == nil){
         cell = [[WriterTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.textView.tag = indexPath.row;
+        cell.textView.delegate = self;
     }
     
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
@@ -100,6 +107,44 @@
     
     return cell;
 }
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
+    
+    return (25.839844 * numLines.intValue) + 50;
+}
+
+- (void) textViewDidBeginEditing:(UITextView *) tv {
+    if([tv.text isEqualToString:_DEFAULT_TWEET_PROMPT]){
+        [tv setText:@""];
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)tv
+{
+    [tweetData setObject:tv.text atIndexedSubscript:tv.tag];
+    
+    int calcNumberOfLines = (tv.contentSize.height / tv.font.lineHeight);
+    NSNumber *prevNumberOfLines = [tweetNumberOfLines objectAtIndex:tv.tag];
+    
+    if(calcNumberOfLines != prevNumberOfLines.intValue){
+        [tweetNumberOfLines setObject:[NSNumber numberWithInt:calcNumberOfLines] atIndexedSubscript:tv.tag];
+        CGRect tvFrame = [tv frame];
+        tvFrame.size.height = tv.contentSize.height;
+        [tv setFrame:tvFrame];
+        
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+        
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:tv.tag inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
+    NSLog(@"%d", calcNumberOfLines);
+//    }
+}
+
 
 /*
 // Override to support conditional editing of the table view.
