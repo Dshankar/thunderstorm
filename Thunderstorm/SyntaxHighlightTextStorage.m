@@ -33,7 +33,7 @@
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
 {
-    NSLog(@"replaceCharactersInRange: %@ with String %@", NSStringFromRange(range), str);
+//    NSLog(@"replaceCharactersInRange: %@ with String %@", NSStringFromRange(range), str);
     
     [self beginEditing];
     [_backingStore replaceCharactersInRange:range withString:str];
@@ -43,7 +43,7 @@
 
 - (void) setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
-    NSLog(@"setAttributes: %@ in range %@", attrs, NSStringFromRange(range));
+//    NSLog(@"setAttributes: %@ in range %@", attrs, NSStringFromRange(range));
     
     [self beginEditing];
     

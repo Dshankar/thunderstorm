@@ -22,6 +22,8 @@
 		F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CA1955AC4D0019C064 /* WriterController.m */; };
 		F9ABA9CD195649C40019C064 /* CrimsonText-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */; };
 		F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */; };
+		F9ABA9D31957A4A10019C064 /* WriterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */; };
+		F9ABA9D61957A6AA0019C064 /* WriterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,10 @@
 		F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
 		F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyntaxHighlightTextStorage.h; sourceTree = "<group>"; };
 		F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyntaxHighlightTextStorage.m; sourceTree = "<group>"; };
+		F9ABA9D11957A4A10019C064 /* WriterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriterTableViewController.h; sourceTree = "<group>"; };
+		F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterTableViewController.m; sourceTree = "<group>"; };
+		F9ABA9D41957A6AA0019C064 /* WriterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriterTableViewCell.h; sourceTree = "<group>"; };
+		F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +127,10 @@
 				F9ABA9A11955AC220019C064 /* Supporting Files */,
 				F9ABA9C91955AC4D0019C064 /* WriterController.h */,
 				F9ABA9CA1955AC4D0019C064 /* WriterController.m */,
+				F9ABA9D11957A4A10019C064 /* WriterTableViewController.h */,
+				F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */,
+				F9ABA9D41957A6AA0019C064 /* WriterTableViewCell.h */,
+				F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */,
 				F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */,
 				F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */,
 			);
@@ -254,8 +264,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */,
+				F9ABA9D31957A4A10019C064 /* WriterTableViewController.m in Sources */,
 				F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */,
 				F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */,
+				F9ABA9D61957A6AA0019C064 /* WriterTableViewCell.m in Sources */,
 				F9ABA9A71955AC220019C064 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,6 +465,7 @@
 				F9ABA9C51955AC230019C064 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F9ABA9C61955AC230019C064 /* Build configuration list for PBXNativeTarget "ThunderstormTests" */ = {
 			isa = XCConfigurationList;
@@ -461,6 +474,7 @@
 				F9ABA9C81955AC230019C064 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
