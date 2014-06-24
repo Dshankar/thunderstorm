@@ -51,9 +51,9 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     self.tableView.rowHeight = 165;
-    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Why print out pages of unreadable stacktraces that are useless to most programmers? Memory addresses don't help me debug such errors.", _DEFAULT_TWEET_PROMPT, nil];
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
 
-    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:5], [NSNumber numberWithInt:1], nil];
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -121,6 +121,7 @@
 
         cell.textView.inputAccessoryView = inputAccessory;
         
+        
     }
     
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
@@ -131,15 +132,36 @@
 
 - (void)addNewCell:(id)sender
 {
-    NSLog(@"DUDE CLICKED");
+//    NSLog(@"There are %d tweets, with content %@", [tweetData count], tweetData);
+//    NSLog(@"There are %d lines", [tweetNumberOfLines count]);
+    
+    [self.tweetData addObject:_DEFAULT_TWEET_PROMPT];
+    [self.tweetNumberOfLines addObject:[NSNumber numberWithInt:1]];
+    NSArray *paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0]];
+    [self.tableView beginUpdates];
+    [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView endUpdates];
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    UIResponder *nextResponder = [self.tableView viewWithTag:tweetData.count - 1];
+    [nextResponder becomeFirstResponder];
+    
+//    NSLog(@"There are %d tweets, with content %@", [self.tweetData count], tweetData);
+//    NSLog(@"There are %d lines", [self.tweetNumberOfLines count]);
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
+    if(numLines.intValue == 1){
+            return (25.839844 + 50);
+    } else {
+            return (25.839844 * numLines.intValue) + 50;
+    }
     
-    return (25.839844 * numLines.intValue) + 50;
+
 }
 
 - (void) textViewDidBeginEditing:(UITextView *) tv {

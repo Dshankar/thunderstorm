@@ -24,7 +24,7 @@
     if (self) {
         // Initialization code
         [self createTextView];
-        
+                
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,20,20)];
@@ -58,13 +58,13 @@
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     
-    CGSize containerSize = CGSizeMake(270, 220);
+    CGSize containerSize = CGSizeMake(270, 300);
     NSTextContainer *container = [[NSTextContainer alloc] initWithSize:containerSize];
     container.widthTracksTextView = YES;
     [layoutManager addTextContainer:container];
     [_textStorage addLayoutManager:layoutManager];
     
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(25,25,270,150) textContainer:container];
+    textView = [[UITextView alloc] initWithFrame:CGRectMake(25,25,270,30) textContainer:container];
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
     
