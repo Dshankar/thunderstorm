@@ -93,7 +93,10 @@
                     snapshot.center = center;
                     snapshot.transform = CGAffineTransformMakeScale(1.05, 1.05);
                     snapshot.alpha = 0.98;
-                    cell.backgroundColor = [UIColor blackColor];
+                    cell.backgroundColor = [UIColor colorWithRed:(238.0/255) green:(238.0/255) blue:(238.0/255) alpha:1.0];
+                    cell.textView.hidden = YES;
+                    cell.tweetId.hidden = YES;
+                    
                 } completion:nil];
             }
             break;
@@ -105,6 +108,7 @@
             
             if(indexPath && ![indexPath isEqual:sourceIndexPath]){
                 [self.tweetData exchangeObjectAtIndex:indexPath.row withObjectAtIndex:sourceIndexPath.row];
+                [self.tweetNumberOfLines exchangeObjectAtIndex:indexPath.row withObjectAtIndex:sourceIndexPath.row];
                 [self.tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:indexPath];
                 sourceIndexPath = indexPath;
             }
@@ -118,9 +122,16 @@
                 snapshot.alpha = 0.0;
                 
                 cell.backgroundColor = [UIColor whiteColor];
+                cell.textView.hidden = NO;
+                cell.tweetId.hidden = NO;
+                
             } completion:^(BOOL finished){
                 [snapshot removeFromSuperview];
                 snapshot = nil;
+                
+                [self.tableView beginUpdates];
+                [self.tableView reloadData];
+                [self.tableView endUpdates];
             }];
             sourceIndexPath = nil;
             break;
