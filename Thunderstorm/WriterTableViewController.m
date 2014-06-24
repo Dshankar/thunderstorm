@@ -100,12 +100,38 @@
         cell = [[WriterTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.textView.tag = indexPath.row;
         cell.textView.delegate = self;
+        
+        
+        UIView *inputAccessory = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+        inputAccessory.backgroundColor = [UIColor whiteColor];
+        
+        UIView *seperator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 1.0)];
+        UIColor *ultraLightGray = [UIColor colorWithRed:(232.0/255) green:(236.0/255) blue:(240.0/255) alpha:1.0];
+        seperator.backgroundColor = ultraLightGray;
+        [inputAccessory addSubview:seperator];
+        
+        UIButton *newCellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        newCellButton.frame = CGRectMake(160, 0, 160, 44);
+        [newCellButton setTitle:@"+" forState:UIControlStateNormal];
+        [newCellButton.titleLabel setFont:[UIFont systemFontOfSize:20.0]];
+        UIColor *linkBlue = [UIColor colorWithRed:(62.0/255) green:(132.0/255) blue:(226.0/255) alpha:1.0];
+        [newCellButton setTitleColor:linkBlue forState:UIControlStateNormal];
+        [newCellButton addTarget:self action:@selector(addNewCell:) forControlEvents:UIControlEventTouchUpInside];
+        [inputAccessory addSubview:newCellButton];
+
+        cell.textView.inputAccessoryView = inputAccessory;
+        
     }
     
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
     [cell.tweetId setText:[NSString stringWithFormat:@"%d/", indexPath.row + 1]];
     
     return cell;
+}
+
+- (void)addNewCell:(id)sender
+{
+    NSLog(@"DUDE CLICKED");
 }
 
 

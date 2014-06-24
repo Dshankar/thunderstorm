@@ -68,8 +68,6 @@
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
     
-//    textView.delegate = self;
-    
     UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,20,20)];
     textView.textContainer.exclusionPaths = @[exclusionPath];
     
