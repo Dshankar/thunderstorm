@@ -215,9 +215,6 @@
 
 - (void)addNewCell:(id)sender
 {
-//    NSLog(@"There are %d tweets, with content %@", [tweetData count], tweetData);
-//    NSLog(@"There are %d lines", [tweetNumberOfLines count]);
-    
     [self.tweetData addObject:_DEFAULT_TWEET_PROMPT];
     [self.tweetNumberOfLines addObject:[NSNumber numberWithInt:1]];
     NSArray *paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0]];
@@ -229,11 +226,7 @@
     
     UIResponder *nextResponder = [self.tableView viewWithTag:tweetData.count - 1];
     [nextResponder becomeFirstResponder];
-    
-//    NSLog(@"There are %d tweets, with content %@", [self.tweetData count], tweetData);
-//    NSLog(@"There are %d lines", [self.tweetNumberOfLines count]);
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

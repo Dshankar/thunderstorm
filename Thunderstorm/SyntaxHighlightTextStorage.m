@@ -63,8 +63,8 @@
 
 - (void) processEditing
 {
+    [self performReplacementsForRange:[self editedRange]];
     [self performMaxLengthStyle];
-//    [self performReplacementsForRange:[self editedRange]];
     [super processEditing];
 }
 
@@ -77,39 +77,22 @@
 
 - (void)applyStylesToRange:(NSRange)searchRange
 {
-    NSString *maxLengthRegexStr = @".{30,}";
-    NSString *regex = @"\\s([A-Z]{2,})\\s";
-    NSRegularExpression *maxLengthRegex = [NSRegularExpression regularExpressionWithPattern:maxLengthRegexStr options:0 error:nil];
-    
     NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName :[UIColor defaultGray]};
-    NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed]};
     NSDictionary *linkBlueAttributes = @{NSForegroundColorAttributeName :[UIColor linkBlue]};
     
-//    [maxLengthRegex enumerateMatchesInString:[_backingStore string]
-//                            options:0
-//                              range:searchRange
-//                         usingBlock:^(NSTextCheckingResult *match,
-//                                      NSMatchingFlags flags,
-//                                      BOOL *stop){
-
-//                             NSRange matchRange = [match rangeAtIndex:1];
-//                             [self addAttributes:errorRedAttributes range:NSMakeRange(30, self.length - 30)];
+    [self addAttributes:defaultGrayAttributes range:searchRange];
     
-//                             if(NSMaxRange(matchRange)+1 < self.length){
-//                                 [self addAttributes:defaultGrayAttributes range:NSMakeRange(NSMaxRange(matchRange)+1, 1)];
-//                             }
-    
-//                         }];
-
+    NSArray *entities = [TwitterText entitiesInText:[self.string substringWithRange:searchRange]];
+    for (int i = 0; i < [entities count]; i++) {
+        TwitterTextEntity *entity = entities[i];
+        [self addAttributes:linkBlueAttributes range:entity.range];
+    }
 }
 
 - (void)performMaxLengthStyle
 {
     const int MAX_TWEET_LENGTH = 140;
-    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName : [UIColor defaultGray]};
     NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed ]};
-    
-    [self addAttributes:defaultGrayAttributes range:NSMakeRange(0, self.length)];
     
     NSInteger twLength = [TwitterText tweetLength:self.string];
     
