@@ -60,6 +60,8 @@
         [settings setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.8] forState:UIControlStateNormal];
         settings.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [self.view addSubview:settings];
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
     }
     return self;
 }
@@ -74,6 +76,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 - (void)showWriteScreen:(id)sender

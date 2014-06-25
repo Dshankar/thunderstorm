@@ -52,9 +52,13 @@
         
         [self.navigationItem setLeftBarButtonItem:settingsButton];
         [self.navigationItem setRightBarButtonItem:_publishButton];
-        
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
 - (void)viewDidLoad
