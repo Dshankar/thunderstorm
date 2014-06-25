@@ -31,10 +31,18 @@
         _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
         
         _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
-        [_publishButton setTintColor:[UIColor grayColor]];
+        [_publishButton setTintColor:[UIColor linkBlue]];
+        
+        UIFontDescriptor* fontDescriptor = [UIFontDescriptor
+                                            preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+        UIFontDescriptor* boldFontDescriptor = [fontDescriptor
+                                                fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+        UIFont* boldFont =  [UIFont fontWithDescriptor:boldFontDescriptor size: 0.0];
+        NSDictionary *boldAttribute = @{NSFontAttributeName : boldFont};
+        [_publishButton setTitleTextAttributes:boldAttribute forState:UIControlStateNormal];
         
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
-        [settingsButton setTintColor:[UIColor grayColor]];
+        [settingsButton setTintColor:[UIColor mutedGray]];
         
 // For future reference
 // This will one day be a deeper view in the nav stack, preceded by a setup view
@@ -236,8 +244,6 @@
     } else {
             return (25.839844 * numLines.intValue) + 50;
     }
-    
-
 }
 
 - (void) textViewDidBeginEditing:(UITextView *) tv {
