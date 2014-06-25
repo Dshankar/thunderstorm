@@ -41,7 +41,8 @@
         NSDictionary *boldAttribute = @{NSFontAttributeName : boldFont};
         [_publishButton setTitleTextAttributes:boldAttribute forState:UIControlStateNormal];
         
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
+        // for settings use @"\u2699"
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
         [settingsButton setTintColor:[UIColor mutedGray]];
         
 // For future reference
@@ -166,7 +167,7 @@
 
 - (void) displaySettings:(id)sender
 {
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
