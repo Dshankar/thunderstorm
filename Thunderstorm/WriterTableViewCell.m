@@ -8,11 +8,11 @@
 
 #import "WriterTableViewCell.h"
 #import "SyntaxHighlightTextStorage.h"
+#import "UIColor+ThunderColors.h"
 
 @implementation WriterTableViewCell
 {
     SyntaxHighlightTextStorage* _textStorage;
-    int numberOfLines;
 }
 
 @synthesize textView;
@@ -29,9 +29,7 @@
         
         tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,20,20)];
         [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]];
-        [tweetId setTextColor:[UIColor colorWithRed:(190.0/255) green:(196.0/255) blue:(205.0/255) alpha:1.0]];
-        
-//        numberOfLines = (self.textView.contentSize.height / self.textView.font.lineHeight) - 1 ;
+        [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
     }
     return self;

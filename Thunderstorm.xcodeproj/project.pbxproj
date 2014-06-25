@@ -19,11 +19,13 @@
 		F9ABA9B61955AC230019C064 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99E1955AC220019C064 /* UIKit.framework */; };
 		F9ABA9BE1955AC230019C064 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9BC1955AC230019C064 /* InfoPlist.strings */; };
 		F9ABA9C01955AC230019C064 /* ThunderstormTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */; };
-		F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CA1955AC4D0019C064 /* WriterController.m */; };
 		F9ABA9CD195649C40019C064 /* CrimsonText-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */; };
 		F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */; };
 		F9ABA9D31957A4A10019C064 /* WriterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */; };
 		F9ABA9D61957A6AA0019C064 /* WriterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */; };
+		F9BA03C0195A52830064F12E /* TwitterText.m in Sources */ = {isa = PBXBuildFile; fileRef = F9BA03BD195A52830064F12E /* TwitterText.m */; };
+		F9BA03C1195A52830064F12E /* TwitterTextEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = F9BA03BF195A52830064F12E /* TwitterTextEntity.m */; };
+		F9BA03C4195A55030064F12E /* UIColor+ThunderColors.m in Sources */ = {isa = PBXBuildFile; fileRef = F9BA03C3195A55030064F12E /* UIColor+ThunderColors.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +55,6 @@
 		F9ABA9BB1955AC230019C064 /* ThunderstormTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ThunderstormTests-Info.plist"; sourceTree = "<group>"; };
 		F9ABA9BD1955AC230019C064 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F9ABA9BF1955AC230019C064 /* ThunderstormTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThunderstormTests.m; sourceTree = "<group>"; };
-		F9ABA9C91955AC4D0019C064 /* WriterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriterController.h; sourceTree = "<group>"; };
-		F9ABA9CA1955AC4D0019C064 /* WriterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterController.m; sourceTree = "<group>"; };
 		F9ABA9CC195649C40019C064 /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
 		F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyntaxHighlightTextStorage.h; sourceTree = "<group>"; };
 		F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyntaxHighlightTextStorage.m; sourceTree = "<group>"; };
@@ -62,6 +62,12 @@
 		F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterTableViewController.m; sourceTree = "<group>"; };
 		F9ABA9D41957A6AA0019C064 /* WriterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriterTableViewCell.h; sourceTree = "<group>"; };
 		F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterTableViewCell.m; sourceTree = "<group>"; };
+		F9BA03BC195A52830064F12E /* TwitterText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterText.h; sourceTree = "<group>"; };
+		F9BA03BD195A52830064F12E /* TwitterText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterText.m; sourceTree = "<group>"; };
+		F9BA03BE195A52830064F12E /* TwitterTextEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTextEntity.h; sourceTree = "<group>"; };
+		F9BA03BF195A52830064F12E /* TwitterTextEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterTextEntity.m; sourceTree = "<group>"; };
+		F9BA03C2195A55030064F12E /* UIColor+ThunderColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ThunderColors.h"; sourceTree = "<group>"; };
+		F9BA03C3195A55030064F12E /* UIColor+ThunderColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ThunderColors.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,14 +131,15 @@
 				F9ABA9AA1955AC220019C064 /* AppDelegate.m */,
 				F9ABA9AC1955AC220019C064 /* Images.xcassets */,
 				F9ABA9A11955AC220019C064 /* Supporting Files */,
-				F9ABA9C91955AC4D0019C064 /* WriterController.h */,
-				F9ABA9CA1955AC4D0019C064 /* WriterController.m */,
 				F9ABA9D11957A4A10019C064 /* WriterTableViewController.h */,
 				F9ABA9D21957A4A10019C064 /* WriterTableViewController.m */,
 				F9ABA9D41957A6AA0019C064 /* WriterTableViewCell.h */,
 				F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */,
 				F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */,
 				F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */,
+				F9BA03BB195A52720064F12E /* Twitter-Text-Objc */,
+				F9BA03C2195A55030064F12E /* UIColor+ThunderColors.h */,
+				F9BA03C3195A55030064F12E /* UIColor+ThunderColors.m */,
 			);
 			path = Thunderstorm;
 			sourceTree = "<group>";
@@ -165,6 +172,17 @@
 				F9ABA9BC1955AC230019C064 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F9BA03BB195A52720064F12E /* Twitter-Text-Objc */ = {
+			isa = PBXGroup;
+			children = (
+				F9BA03BC195A52830064F12E /* TwitterText.h */,
+				F9BA03BD195A52830064F12E /* TwitterText.m */,
+				F9BA03BE195A52830064F12E /* TwitterTextEntity.h */,
+				F9BA03BF195A52830064F12E /* TwitterTextEntity.m */,
+			);
+			name = "Twitter-Text-Objc";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,9 +284,11 @@
 				F9ABA9D0195651A70019C064 /* SyntaxHighlightTextStorage.m in Sources */,
 				F9ABA9D31957A4A10019C064 /* WriterTableViewController.m in Sources */,
 				F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */,
-				F9ABA9CB1955AC4D0019C064 /* WriterController.m in Sources */,
 				F9ABA9D61957A6AA0019C064 /* WriterTableViewCell.m in Sources */,
+				F9BA03C0195A52830064F12E /* TwitterText.m in Sources */,
 				F9ABA9A71955AC220019C064 /* main.m in Sources */,
+				F9BA03C4195A55030064F12E /* UIColor+ThunderColors.m in Sources */,
+				F9BA03C1195A52830064F12E /* TwitterTextEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,9 @@
 //
 
 #import "SyntaxHighlightTextStorage.h"
+#import "TwitterText.h"
+#import "TwitterTextEntity.h"
+#import "UIColor+ThunderColors.h"
 
 @implementation SyntaxHighlightTextStorage
 {
@@ -26,6 +29,16 @@
     return [_backingStore string];
 }
 
+//- (NSUInteger)length
+//{
+//    NSInteger twLength = [TwitterText tweetLength:self.string];
+//    NSInteger bsLength = [_backingStore length];
+//    
+//    NSLog(@"Twitter length: %d Real length: %d", twLength, bsLength);
+//    
+//    return bsLength;
+//}
+
 - (NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
 {
     return [_backingStore attributesAtIndex:location effectiveRange:range];
@@ -33,8 +46,6 @@
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
 {
-//    NSLog(@"replaceCharactersInRange: %@ with String %@", NSStringFromRange(range), str);
-    
     [self beginEditing];
     [_backingStore replaceCharactersInRange:range withString:str];
     [self edited:NSTextStorageEditedCharacters | NSTextStorageEditedAttributes range:range changeInLength:str.length - range.length];
@@ -43,8 +54,6 @@
 
 - (void) setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
-//    NSLog(@"setAttributes: %@ in range %@", attrs, NSStringFromRange(range));
-    
     [self beginEditing];
     
     [_backingStore setAttributes:attrs range:range];
@@ -72,13 +81,9 @@
     NSString *regex = @"\\s([A-Z]{2,})\\s";
     NSRegularExpression *maxLengthRegex = [NSRegularExpression regularExpressionWithPattern:maxLengthRegexStr options:0 error:nil];
     
-    UIColor *defaultGray = [UIColor colorWithRed:(104.0/255) green:(110.0/255) blue:(119.0/255) alpha:1.0];
-    UIColor *mutedGray = [UIColor colorWithRed:(190.0/255) green:(196.0/255) blue:(205.0/255) alpha:1.0];
-    UIColor *errorRed = [UIColor colorWithRed:(212.0/255) green:(81.0/255) blue:(81.0/255) alpha:1.0];
-    
-    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName :defaultGray};
-    NSDictionary *mutedGrayAttributes = @{NSForegroundColorAttributeName :mutedGray};
-    NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :errorRed};
+    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName :[UIColor defaultGray]};
+    NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed]};
+    NSDictionary *linkBlueAttributes = @{NSForegroundColorAttributeName :[UIColor linkBlue]};
     
 //    [maxLengthRegex enumerateMatchesInString:[_backingStore string]
 //                            options:0
@@ -101,15 +106,16 @@
 - (void)performMaxLengthStyle
 {
     const int MAX_TWEET_LENGTH = 140;
-    UIColor *defaultGray = [UIColor colorWithRed:(104.0/255) green:(110.0/255) blue:(119.0/255) alpha:1.0];
-    UIColor *errorRed = [UIColor colorWithRed:(212.0/255) green:(81.0/255) blue:(81.0/255) alpha:1.0];
-    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName :defaultGray};
-    NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :errorRed};
+    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName : [UIColor defaultGray]};
+    NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed ]};
     
     [self addAttributes:defaultGrayAttributes range:NSMakeRange(0, self.length)];
     
-    if(self.length > MAX_TWEET_LENGTH){
-        [self addAttributes:errorRedAttributes range:NSMakeRange(MAX_TWEET_LENGTH, self.length - MAX_TWEET_LENGTH)];
+    NSInteger twLength = [TwitterText tweetLength:self.string];
+    
+    if(twLength > MAX_TWEET_LENGTH){
+        NSInteger excessCharacters = twLength - MAX_TWEET_LENGTH;
+        [self addAttributes:errorRedAttributes range:NSMakeRange(self.length - excessCharacters, excessCharacters)];
     }
 }
 

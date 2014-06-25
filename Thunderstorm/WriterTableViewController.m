@@ -8,6 +8,7 @@
 
 #import "WriterTableViewController.h"
 #import "WriterTableViewCell.h"
+#import "UIColor+ThunderColors.h"
 
 @interface WriterTableViewController ()
 @end
@@ -34,6 +35,11 @@
         
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
         [settingsButton setTintColor:[UIColor grayColor]];
+        
+// For future reference
+// This will one day be a deeper view in the nav stack, preceded by a setup view
+//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+//        [self.navigationItem setLeftBarButtonItem:backButton];
         
         [self.navigationItem setLeftBarButtonItem:settingsButton];
         [self.navigationItem setRightBarButtonItem:_publishButton];
@@ -192,8 +198,7 @@
         newCellButton.frame = CGRectMake(160, 0, 160, 44);
         [newCellButton setTitle:@"+" forState:UIControlStateNormal];
         [newCellButton.titleLabel setFont:[UIFont systemFontOfSize:20.0]];
-        UIColor *linkBlue = [UIColor colorWithRed:(62.0/255) green:(132.0/255) blue:(226.0/255) alpha:1.0];
-        [newCellButton setTitleColor:linkBlue forState:UIControlStateNormal];
+        [newCellButton setTitleColor:[UIColor linkBlue] forState:UIControlStateNormal];
         [newCellButton addTarget:self action:@selector(addNewCell:) forControlEvents:UIControlEventTouchUpInside];
         [inputAccessory addSubview:newCellButton];
 
