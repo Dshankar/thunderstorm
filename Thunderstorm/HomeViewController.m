@@ -8,6 +8,8 @@
 
 #import "HomeViewController.h"
 #import "WriterTableViewController.h"
+#import <Social/Social.h>
+#import "UIColor+ThunderColors.h"
 
 @interface HomeViewController ()
 
@@ -28,38 +30,39 @@
         [self.view addSubview:bg];
         
         // From http://stackoverflow.com/questions/18972994/ios-7-parallax-effect-in-my-view-controller
-        // Set horizontal effect
         UIInterpolatingMotionEffect *horizontalMotionEffect =
         [[UIInterpolatingMotionEffect alloc]
          initWithKeyPath:@"center.x"
          type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         horizontalMotionEffect.minimumRelativeValue = @(-60);
         horizontalMotionEffect.maximumRelativeValue = @(60);
-        
-        // Create group to combine both
         UIMotionEffectGroup *group = [UIMotionEffectGroup new];
         group.motionEffects = @[horizontalMotionEffect];
-        
-        // Add both effects to your view
         [bg addMotionEffect:group];
         
-        UIButton *write = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [write addTarget:self action:@selector(showWriteScreen:) forControlEvents:UIControlEventTouchUpInside];
-        [write setFrame:CGRectMake(30, 360, 140, 50)];
-        [write setTitle:@"Write" forState:UIControlStateNormal];
-        [write.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:48.0f]];
-        [write setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        write.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [self.view addSubview:write];
+        UILabel *mainTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 280, 100)];
+        [mainTitle setNumberOfLines:2];
+        [mainTitle setText:@"Welcome to\nThunderstorm"];
+        [mainTitle setFont:[UIFont fontWithName:@"Lato-Bold" size:38.0f]];
+        [mainTitle setTextColor:[UIColor colorWithWhite:1.0 alpha:1.0]];
+        [self.view addSubview:mainTitle];
         
-        UIButton *settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [settings addTarget:self action:@selector(showSettingsScreen:) forControlEvents:UIControlEventTouchUpInside];
-        [settings setFrame:CGRectMake(30, 440, 180, 50)];
-        [settings setTitle:@"Settings" forState:UIControlStateNormal];
-        [settings.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:44.0f]];
-        [settings setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.8] forState:UIControlStateNormal];
-        settings.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [self.view addSubview:settings];
+        UILabel *secondaryTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, 400, 280, 50)];
+        [secondaryTitle setNumberOfLines:2];
+        [secondaryTitle setText:@"Compose long-form opinions &\nPublish to Twitter"];
+        [secondaryTitle setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];
+        [secondaryTitle setTextColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
+        [self.view addSubview:secondaryTitle];
+
+        
+        UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [login addTarget:self action:@selector(showWriteScreen:) forControlEvents:UIControlEventTouchUpInside];
+        [login setFrame:CGRectMake(0, 508, 320, 60)];
+        [login setTitle:@"Login with Twitter" forState:UIControlStateNormal];
+        [login.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:20.0f]];
+        [login setTitleColor:[UIColor colorWithWhite:1.0 alpha:1.0] forState:UIControlStateNormal];
+        [login setBackgroundColor:[UIColor linkBlue]];
+        [self.view addSubview:login];
         
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
     }

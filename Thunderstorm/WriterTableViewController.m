@@ -33,17 +33,22 @@
         _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         [_publishButton setTintColor:[UIColor linkBlue]];
         
-        UIFontDescriptor* fontDescriptor = [UIFontDescriptor
-                                            preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-        UIFontDescriptor* boldFontDescriptor = [fontDescriptor
-                                                fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-        UIFont* boldFont =  [UIFont fontWithDescriptor:boldFontDescriptor size: 0.0];
-        NSDictionary *boldAttribute = @{NSFontAttributeName : boldFont};
-        [_publishButton setTitleTextAttributes:boldAttribute forState:UIControlStateNormal];
+//        UIFontDescriptor* fontDescriptor = [UIFontDescriptor
+//                                            preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+//        UIFontDescriptor* boldFontDescriptor = [fontDescriptor
+//                                                fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+//        UIFont* boldFont =  [UIFont fontWithDescriptor:boldFontDescriptor size: 0.0];
+//        NSDictionary *boldAttribute = @{NSFontAttributeName : boldFont};
+
+        UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
+        NSDictionary *mainFontAttributes = @{NSFontAttributeName : boldFont, NSForegroundColorAttributeName : [UIColor linkBlue]};
+        [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
         
         // for settings use @"\u2699"
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
-        [settingsButton setTintColor:[UIColor mutedGray]];
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
+        UIFont* regularFont =  [UIFont fontWithName:@"Lato-Regular" size:19.0f];
+        NSDictionary *settingsFontAttributes = @{NSFontAttributeName : regularFont, NSForegroundColorAttributeName : [UIColor mutedGray]};
+        [settingsButton setTitleTextAttributes:settingsFontAttributes forState:UIControlStateNormal];
         
 // For future reference
 // This will one day be a deeper view in the nav stack, preceded by a setup view
