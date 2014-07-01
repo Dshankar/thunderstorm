@@ -9,10 +9,11 @@
 #import "HomeViewController.h"
 #import "WriterTableViewController.h"
 #import <Social/Social.h>
+#import <Accounts/Accounts.h>
 #import "UIColor+ThunderColors.h"
 
 @interface HomeViewController ()
-
+@property (nonatomic) ACAccountStore *accountStore;
 @end
 
 @implementation HomeViewController
@@ -22,6 +23,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        _accountStore = [[ACAccountStore alloc] init];
         
         UIImage *bgImage = [UIImage imageNamed:@"thunderstorm.jpg"];
         UIImageView *bg = [[UIImageView alloc] initWithImage:bgImage];
@@ -56,7 +59,7 @@
 
         
         UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [login addTarget:self action:@selector(showWriteScreen:) forControlEvents:UIControlEventTouchUpInside];
+        [login addTarget:self action:@selector(loginWithTwitter:) forControlEvents:UIControlEventTouchUpInside];
         [login setFrame:CGRectMake(0, 508, 320, 60)];
         [login setTitle:@"Login with Twitter" forState:UIControlStateNormal];
         [login.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:20.0f]];
@@ -68,6 +71,12 @@
     }
     return self;
 }
+
+- (BOOL) hasAccessToTwitter
+{
+    return [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter];
+}
+
 
 - (void)viewDidLoad
 {
@@ -86,7 +95,49 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
-- (void)showWriteScreen:(id)sender
+- (void)loginWithTwitter:(id)sender
+{
+    if([self hasAccessToTwitter]){
+        ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+        [self.accountStore requestAccessToAccountsWithType:twitterAccountType options:NULL completion:^(BOOL granted, NSError *error){
+            if(granted){
+                NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
+                if([twitterAccounts count] > 0){
+                    [self performSelectorOnMainThread:@selector(showActionSheetWithAccounts:) withObject:twitterAccounts waitUntilDone:YES];
+                } else {
+                    NSLog(@"TODO USER HAS NO TWITTER ACCOUNTS IN IOS.");
+                }
+            }
+        }];
+    }
+}
+
+- (void)showActionSheetWithAccounts:(NSArray *)accounts
+{
+    UIActionSheet *accountsSheet = [[UIActionSheet alloc] initWithTitle:@"Which Twitter account would you like to use?" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    for(ACAccount *acct in accounts){
+        [accountsSheet addButtonWithTitle:[NSString stringWithFormat:@"@%@",acct.username]];
+    }
+    accountsSheet.cancelButtonIndex = [accountsSheet addButtonWithTitle:@"Cancel"];
+    [accountsSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex != actionSheet.cancelButtonIndex){
+
+        ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+        NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
+        ACAccount *chosenOne = [twitterAccounts objectAtIndex:buttonIndex];
+        NSLog(@"Selected %@", chosenOne.username);
+        
+        [self showWriteScreen];
+    }
+    
+    
+}
+
+- (void)showWriteScreen
 {
     WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStylePlain];
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];

@@ -27,7 +27,7 @@
                 
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,20,20)];
+        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,18,20)];
         [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]];
         [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
@@ -66,7 +66,7 @@
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
     
-    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,20,20)];
+    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,20)];
     textView.textContainer.exclusionPaths = @[exclusionPath];
     
     [self.contentView addSubview:textView];

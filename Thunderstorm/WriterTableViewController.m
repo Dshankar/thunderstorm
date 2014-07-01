@@ -17,11 +17,10 @@
 {
     UIBarButtonItem* _publishButton;
     NSString* _DEFAULT_TWEET_PROMPT;
+    UIResponder* currentlyEditing;
 }
 @synthesize tweetData;
 @synthesize tweetNumberOfLines;
-
-
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -31,29 +30,15 @@
         _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
         
         _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
-        [_publishButton setTintColor:[UIColor linkBlue]];
-        
-//        UIFontDescriptor* fontDescriptor = [UIFontDescriptor
-//                                            preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-//        UIFontDescriptor* boldFontDescriptor = [fontDescriptor
-//                                                fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-//        UIFont* boldFont =  [UIFont fontWithDescriptor:boldFontDescriptor size: 0.0];
-//        NSDictionary *boldAttribute = @{NSFontAttributeName : boldFont};
-
         UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
         NSDictionary *mainFontAttributes = @{NSFontAttributeName : boldFont, NSForegroundColorAttributeName : [UIColor linkBlue]};
         [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
         
-        // for settings use @"\u2699"
+        // for settings use @"\u2699" otherwise, @"Cancel"
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
         UIFont* regularFont =  [UIFont fontWithName:@"Lato-Regular" size:19.0f];
         NSDictionary *settingsFontAttributes = @{NSFontAttributeName : regularFont, NSForegroundColorAttributeName : [UIColor mutedGray]};
         [settingsButton setTitleTextAttributes:settingsFontAttributes forState:UIControlStateNormal];
-        
-// For future reference
-// This will one day be a deeper view in the nav stack, preceded by a setup view
-//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-//        [self.navigationItem setLeftBarButtonItem:backButton];
         
         [self.navigationItem setLeftBarButtonItem:settingsButton];
         [self.navigationItem setRightBarButtonItem:_publishButton];
@@ -82,11 +67,22 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:longPress];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+//    [self.navigationController.navigationBar setHidden:YES];
+    
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)longPressGestureRecognized:(id)sender
@@ -200,9 +196,7 @@
     WriterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(cell == nil){
         cell = [[WriterTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.textView.tag = indexPath.row;
         cell.textView.delegate = self;
-        
         
         UIView *inputAccessory = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
         inputAccessory.backgroundColor = [UIColor whiteColor];
@@ -214,52 +208,120 @@
         
         UIButton *newCellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         newCellButton.frame = CGRectMake(160, 0, 160, 44);
-        [newCellButton setTitle:@"+" forState:UIControlStateNormal];
-        [newCellButton.titleLabel setFont:[UIFont systemFontOfSize:20.0]];
-        [newCellButton setTitleColor:[UIColor linkBlue] forState:UIControlStateNormal];
+        UIImageView *newCellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 11, 20, 20)];
+        [newCellImageView setImage:[UIImage imageNamed:@"new"]];
+        [newCellButton addSubview:newCellImageView];
         [newCellButton addTarget:self action:@selector(addNewCell:) forControlEvents:UIControlEventTouchUpInside];
         [inputAccessory addSubview:newCellButton];
+        
+        UIButton *deleteAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        deleteAllButton.frame = CGRectMake(0, 0, 160, 44);
+        UIImageView *deleteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 11, 20, 20)];
+        [deleteImageView setImage:[UIImage imageNamed:@"trash.png"]];
+        [deleteAllButton addSubview:deleteImageView];
+        [deleteAllButton addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventTouchUpInside];
+        [inputAccessory addSubview:deleteAllButton];
 
         cell.textView.inputAccessoryView = inputAccessory;
-        
-        
     }
     
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
     [cell.tweetId setText:[NSString stringWithFormat:@"%d/", indexPath.row + 1]];
+    if(indexPath.row + 1 >= 10){
+        [cell.tweetId setFrame:CGRectMake(4, 4, 28, 20)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,28,20)];
+        cell.textView.textContainer.exclusionPaths = @[exclusionPath];
+    } else {
+        [cell.tweetId setFrame:CGRectMake(4, 4, 18, 20)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,20)];
+        cell.textView.textContainer.exclusionPaths = @[exclusionPath];
+    }
+    
+    CGRect tvFrame = [cell.textView frame];
+    tvFrame.size.height = ([(NSNumber *)[self.tweetNumberOfLines objectAtIndex:indexPath.row] intValue] * 28) + 8;
+    [cell.textView setFrame:tvFrame];
+    
+    cell.textView.tag = indexPath.row;
     
     return cell;
 }
 
+- (void)hideKeyboard:(id)sender
+{
+    if(currentlyEditing){
+        [currentlyEditing resignFirstResponder];
+        currentlyEditing = nil;
+    }
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+}
+
 - (void)addNewCell:(id)sender
 {
-    [self.tweetData addObject:_DEFAULT_TWEET_PROMPT];
+    int origNumOfTweets = [tweetData count];
+    [self.tweetData addObject:[NSString stringWithFormat:@"%@#%i", _DEFAULT_TWEET_PROMPT, origNumOfTweets+1]];
     [self.tweetNumberOfLines addObject:[NSNumber numberWithInt:1]];
-    NSArray *paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0]];
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0];
+    NSArray *paths = [NSArray arrayWithObject:path];
     [self.tableView beginUpdates];
-    [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
     
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    WriterTableViewCell *cell = (WriterTableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+    UITextView *tv = cell.textView;
     
-    UIResponder *nextResponder = [self.tableView viewWithTag:tweetData.count - 1];
+    UIResponder *nextResponder = tv;
+    if(currentlyEditing){
+        [currentlyEditing resignFirstResponder];
+        currentlyEditing = nil;
+    }
     [nextResponder becomeFirstResponder];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
-    if(numLines.intValue == 1){
-            return (25.839844 + 50);
-    } else {
-            return (25.839844 * numLines.intValue) + 50;
-    }
+    return (25.839844 * numLines.intValue) + 50;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    [UIView animateWithDuration:duration animations:^{
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0);
+        [self.tableView setContentInset:contentInsets];
+        [self.tableView setScrollIndicatorInsets:contentInsets];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+        [self.tableView setContentInset:contentInsets];
+        [self.tableView setScrollIndicatorInsets:contentInsets];
+    }];
+    
+    // the statusBar & navigationBar will un-hide if user actively chooses to hide keyboard
 }
 
 - (void) textViewDidBeginEditing:(UITextView *) tv {
     if([tv.text isEqualToString:_DEFAULT_TWEET_PROMPT]){
         [tv setText:@""];
     }
+    
+    currentlyEditing = tv;
 }
 
 - (void)textViewDidChange:(UITextView *)tv
@@ -272,17 +334,21 @@
     if(calcNumberOfLines != prevNumberOfLines.intValue){
         [tweetNumberOfLines setObject:[NSNumber numberWithInt:calcNumberOfLines] atIndexedSubscript:tv.tag];
         CGRect tvFrame = [tv frame];
-        tvFrame.size.height = tv.contentSize.height;
+        tvFrame.size.height = (calcNumberOfLines * 28) + 8;
         [tv setFrame:tvFrame];
+
+        // This is a hack for the iOS7 UITextView paste bug
+        // when you paste, we haven't resized the uitextview frame yet (code above)
+        // uitextivew (a scroll view) automatically resizes and scrolls to display the caret
+        // we later resize, but the content is already scrolled up and hidden
+        // this fixes it but forcing the contentsize to be the actual frame size
+        [tv setContentSize:tvFrame.size];
         
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
         
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:tv.tag inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:tv.tag inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
-    
-    NSLog(@"%d", calcNumberOfLines);
-//    }
 }
 
 //from http://www.raywenderlich.com/63089/cookbook-moving-table-view-cells-with-a-long-press-gesture
@@ -298,53 +364,18 @@
     return snapshot;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+// ***
+//  TODO:
+//  swipe to dismiss keyboard like the Messages app
+//  should only do this if Swiped DOWN. This triggers on any swipe. Bad UX.
+// ***
+//
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    if(currentlyEditing){
+//        [currentlyEditing resignFirstResponder];
+//        currentlyEditing = nil;
+//    }
+//}
 
 @end
