@@ -260,8 +260,7 @@
 
 - (void)addNewCell:(id)sender
 {
-    int origNumOfTweets = [tweetData count];
-    [self.tweetData addObject:[NSString stringWithFormat:@"%@#%i", _DEFAULT_TWEET_PROMPT, origNumOfTweets+1]];
+    [self.tweetData addObject:@""];
     [self.tweetNumberOfLines addObject:[NSNumber numberWithInt:1]];
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:tweetData.count - 1 inSection:0];

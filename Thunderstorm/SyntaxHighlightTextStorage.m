@@ -91,7 +91,11 @@
 
 - (void)performMaxLengthStyle
 {
-    const int MAX_TWEET_LENGTH = 140;
+    // accounts for index characters "10/"
+    // assumes up to 2 digits, max of "99/"
+    // for now, this will break if > 99 tweets
+    // for now, 1 digit tweets "3/" will have max 139 characters
+    const int MAX_TWEET_LENGTH = 137;
     NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed ]};
     
     NSInteger twLength = [TwitterText tweetLength:self.string];
