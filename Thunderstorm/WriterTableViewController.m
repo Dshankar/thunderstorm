@@ -219,7 +219,7 @@
         UIImageView *deleteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 11, 20, 20)];
         [deleteImageView setImage:[UIImage imageNamed:@"trash.png"]];
         [deleteAllButton addSubview:deleteImageView];
-        [deleteAllButton addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventTouchUpInside];
+        [deleteAllButton addTarget:self action:@selector(deleteAllTweets:) forControlEvents:UIControlEventTouchUpInside];
         [inputAccessory addSubview:deleteAllButton];
 
         cell.textView.inputAccessoryView = inputAccessory;
@@ -244,6 +244,99 @@
     cell.textView.tag = indexPath.row;
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
+    return (25.839844 * numLines.intValue) + 50;
+}
+
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(editingStyle == UITableViewCellEditingStyleDelete){
+
+        BOOL deleteCurrentlyEditing = NO;
+        BOOL deleteCurrentlyEditingLastTweet = NO;
+        
+        [currentlyEditing resignFirstResponder];
+        
+        // does user want to delete a line that the user is currently editing?
+        if([(UITextView *)currentlyEditing tag] == indexPath.row){
+            currentlyEditing = nil;
+            deleteCurrentlyEditing = YES;
+
+            // make sure user is not deleting the last tweet
+            if(tweetData.count > indexPath.row + 1){
+                deleteCurrentlyEditingLastTweet = NO;
+            } else {
+                deleteCurrentlyEditingLastTweet = YES;
+            }
+        }
+        
+        [tweetData removeObjectAtIndex:indexPath.row];
+        [tweetNumberOfLines removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        if(tweetData.count == 0){
+            [self addNewCell:nil];
+        }
+        
+        [self.tableView beginUpdates];
+        [self.tableView reloadData];
+        [self.tableView endUpdates];
+        
+        if(deleteCurrentlyEditing){
+            // user deleted the currently editing cell
+            WriterTableViewCell *cell;
+            
+            if(deleteCurrentlyEditingLastTweet){
+                // user deleted last tweet, so set responder to previous element
+                // as long as this isn't the only tweet
+                if(tweetData.count > 1){
+                    cell = (WriterTableViewCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row-1) inSection:0]];
+                } else {
+                    // user deleted the only tweet
+                    cell = (WriterTableViewCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                }
+            } else {
+                // user did not delete the last tweet, so set responder to next element
+                // the indexPath now refers to the "next element" because the cell previously in this indexPath is already deleted
+                cell = (WriterTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+            }
+            [cell.textView becomeFirstResponder];
+            currentlyEditing = cell.textView;
+            
+        } else {
+            // bring back the keyboard to whichever cell was currently being edited
+            // wait until UITableViewRowAnimationFade is complete
+            [self performSelector:@selector(reassignResponder) withObject:nil afterDelay:0.2];
+        }
+
+    }
+}
+
+- (void)reassignResponder
+{
+    [currentlyEditing becomeFirstResponder];
+}
+
+- (void)deleteAllTweets:(id)sender
+{
+    UIAlertView *confirm = [[UIAlertView alloc] initWithTitle:@"Delete All Tweets?" message:@"Tip: You can swipe to delete a tweet" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete All", nil];
+    [confirm show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1){
+        NSLog(@"OK WILL DO");
+    }
 }
 
 - (void)hideKeyboard:(id)sender
@@ -279,12 +372,6 @@
         currentlyEditing = nil;
     }
     [nextResponder becomeFirstResponder];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
-    return (25.839844 * numLines.intValue) + 50;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
