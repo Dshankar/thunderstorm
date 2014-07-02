@@ -207,16 +207,24 @@
         [inputAccessory addSubview:seperator];
         
         UIButton *newCellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        newCellButton.frame = CGRectMake(160, 0, 160, 44);
-        UIImageView *newCellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 11, 20, 20)];
-        [newCellImageView setImage:[UIImage imageNamed:@"new"]];
+        newCellButton.frame = CGRectMake(210, 0, 100, 44);
+        UIImageView *newCellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, 11, 20, 20)];
+        [newCellImageView setImage:[UIImage imageNamed:@"new.png"]];
         [newCellButton addSubview:newCellImageView];
         [newCellButton addTarget:self action:@selector(addNewCell:) forControlEvents:UIControlEventTouchUpInside];
         [inputAccessory addSubview:newCellButton];
         
+        UIButton *hideKeyboardButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        hideKeyboardButton.frame = CGRectMake(110, 0, 100, 44);
+        UIImageView *hideKeyboardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, 11, 20, 20)];
+        [hideKeyboardImageView setImage:[UIImage imageNamed:@"keyboard.png"]];
+        [hideKeyboardButton addSubview:hideKeyboardImageView];
+        [hideKeyboardButton addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventTouchUpInside];
+        [inputAccessory addSubview:hideKeyboardButton];
+        
         UIButton *deleteAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        deleteAllButton.frame = CGRectMake(0, 0, 160, 44);
-        UIImageView *deleteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70, 11, 20, 20)];
+        deleteAllButton.frame = CGRectMake(10, 0, 100, 44);
+        UIImageView *deleteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, 11, 20, 20)];
         [deleteImageView setImage:[UIImage imageNamed:@"trash.png"]];
         [deleteAllButton addSubview:deleteImageView];
         [deleteAllButton addTarget:self action:@selector(deleteAllTweets:) forControlEvents:UIControlEventTouchUpInside];
@@ -328,14 +336,26 @@
 
 - (void)deleteAllTweets:(id)sender
 {
-    UIAlertView *confirm = [[UIAlertView alloc] initWithTitle:@"Delete All Tweets?" message:@"Tip: You can swipe to delete a tweet" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete All", nil];
+    UIAlertView *confirm = [[UIAlertView alloc] initWithTitle:@"Delete All?" message:@"Tip: You can swipe left to delete individual tweets" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete All", nil];
     [confirm show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(buttonIndex == 1){
-        NSLog(@"OK WILL DO");
+        if(currentlyEditing){
+            [currentlyEditing resignFirstResponder];
+        }
+        
+        [tweetData removeAllObjects];
+        [tweetNumberOfLines removeAllObjects];
+        [tweetData addObject:@""];
+        [tweetNumberOfLines addObject:[NSNumber numberWithInt:1]];
+        [self.tableView reloadData];
+        
+        WriterTableViewCell *cell = (WriterTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        currentlyEditing = cell.textView;
+        [currentlyEditing becomeFirstResponder];
     }
 }
 
