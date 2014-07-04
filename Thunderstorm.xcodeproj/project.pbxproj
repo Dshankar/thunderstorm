@@ -14,6 +14,7 @@
 		F90EF25019661E52007211CC /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF24F19661E52007211CC /* SettingsTableViewController.m */; };
 		F90EF25319663207007211CC /* WebsiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF25219663207007211CC /* WebsiteViewController.m */; };
 		F90EF2561966378B007211CC /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF2551966378B007211CC /* Settings.m */; };
+		F90EF2591966408B007211CC /* screenshot1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F90EF2581966408A007211CC /* screenshot1.jpg */; };
 		F9ABA99B1955AC220019C064 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99A1955AC220019C064 /* Foundation.framework */; };
 		F9ABA99D1955AC220019C064 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99C1955AC220019C064 /* CoreGraphics.framework */; };
 		F9ABA99F1955AC220019C064 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9ABA99E1955AC220019C064 /* UIKit.framework */; };
@@ -66,6 +67,7 @@
 		F90EF25219663207007211CC /* WebsiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsiteViewController.m; sourceTree = "<group>"; };
 		F90EF2541966378B007211CC /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		F90EF2551966378B007211CC /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		F90EF2581966408A007211CC /* screenshot1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = screenshot1.jpg; sourceTree = "<group>"; };
 		F9ABA9971955AC220019C064 /* Thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9ABA99A1955AC220019C064 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9ABA99C1955AC220019C064 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -136,6 +138,7 @@
 		F9ABA98E1955AC220019C064 = {
 			isa = PBXGroup;
 			children = (
+				F90EF2581966408A007211CC /* screenshot1.jpg */,
 				F9ABA9A01955AC220019C064 /* Thunderstorm */,
 				F9ABA9B91955AC230019C064 /* ThunderstormTests */,
 				F9ABA9991955AC220019C064 /* Frameworks */,
@@ -328,6 +331,7 @@
 				F9BA03D7195C2AF10064F12E /* Lato-Regular.ttf in Resources */,
 				F90EF2461964E40E007211CC /* publish@2x.png in Resources */,
 				F9BA03DD195CDED60064F12E /* trash@2x.png in Resources */,
+				F90EF2591966408B007211CC /* screenshot1.jpg in Resources */,
 				F9ABA9CD195649C40019C064 /* CrimsonText-Roman.ttf in Resources */,
 				F9BA03CD195B81510064F12E /* thunderstorm@2x.jpg in Resources */,
 				F9BA03D5195C1FF00064F12E /* Lato-Light.ttf in Resources */,
