@@ -37,13 +37,7 @@
 //        [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
         _publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         
-        
-        // for settings use @"\u2699" otherwise, @"Cancel"
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
-        UIFont* regularFont =  [UIFont fontWithName:@"Lato-Regular" size:19.0f];
-        NSDictionary *settingsFontAttributes = @{NSFontAttributeName : regularFont, NSForegroundColorAttributeName : [UIColor mutedGray]};
-        [settingsButton setTitleTextAttributes:settingsFontAttributes forState:UIControlStateNormal];
-        
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"settings"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
         [self.navigationItem setLeftBarButtonItem:settingsButton];
         [self.navigationItem setRightBarButtonItem:_publishButton];
     }

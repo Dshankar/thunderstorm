@@ -111,7 +111,7 @@
 {
     if(section == 0){
         return @"A gap will avoid spamming followers";
-    } else if (section == 3) {
+    } else if (section == 2) {
         return @"Creative Commons Attribution 3.0";
     } else {
         return nil;
@@ -126,7 +126,7 @@
         case 0:
             return [settings.durationOptions count];
         case 1:
-            return 1;
+            return 2;
         case 2:
             return 1;
         case 3:
@@ -156,15 +156,20 @@
             }
             break;
         case 1:
-            [cell.textLabel setText:@"Created by @dshankar"];
-            [cell.textLabel setTextColor:[UIColor linkBlue]];
+            if(indexPath.row == 0){
+                [cell.textLabel setText:@"Created by @dshankar"];
+                [cell.textLabel setTextColor:[UIColor linkBlue]];
+            } else {
+                [cell.textLabel setText:@"Open Source on Github"];
+            }
             break;
         case 2:
-            [cell.textLabel setText:@"Open Source on Github"];
-            [cell.textLabel setTextColor:[UIColor linkBlue]];
+            [cell.textLabel setText:@"Photo by Superfamous Studios"];
             break;
         case 3:
-            [cell.textLabel setText:@"Photo by Superfamous Studios"];
+            [cell.textLabel setText:@"Log Out of Twitter"];
+            [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+            [cell.textLabel setTextColor:[UIColor errorRed]];
             break;
     }
 
@@ -188,20 +193,23 @@
                 }
             }
             break;
-        } case 1:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
+        } case 1: {
+            if(indexPath.row == 0){
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
+            } else {
+                WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
+                [website loadURLwithString:@"http://github.com/Dshankar/thunderstorm"];
+                [self.navigationController pushViewController:website animated:YES];
+            }
             break;
-        case 2:{
-            WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
-            [website loadURLwithString:@"http://github.com/Dshankar/thunderstorm"];
-            [self.navigationController pushViewController:website animated:YES];
-            break;
-        } case 3: {
+        } case 2: {
             WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
             [website loadURLwithString:@"http://superfamous.com/filter/attribution-3.0"];
             [self.navigationController pushViewController:website animated:YES];
             break;
-        }
+        } case 3:
+            // TODO logout
+            break;
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
