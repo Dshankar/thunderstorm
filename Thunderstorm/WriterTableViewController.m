@@ -9,6 +9,8 @@
 #import "WriterTableViewController.h"
 #import "WriterTableViewCell.h"
 #import "UIColor+ThunderColors.h"
+#import "PublishViewController.h"
+#import "SettingsTableViewController.h"
 
 @interface WriterTableViewController ()
 @end
@@ -29,10 +31,12 @@
         // Custom initialization
         _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
         
-        _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
-        UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
-        NSDictionary *mainFontAttributes = @{NSFontAttributeName : boldFont, NSForegroundColorAttributeName : [UIColor linkBlue]};
-        [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
+//        _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
+//        UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
+//        NSDictionary *mainFontAttributes = @{NSFontAttributeName : boldFont, NSForegroundColorAttributeName : [UIColor whiteColor]};
+//        [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
+        _publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
+        
         
         // for settings use @"\u2699" otherwise, @"Cancel"
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
@@ -60,9 +64,13 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     self.tableView.rowHeight = 165;
-    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
+//    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
+    
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", @"when Uber has no competition, like in NYC, it is still very expensive 'UberX is still more expensive in NYC than taxis'", @"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", nil];
 
-    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
+//    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
+
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], nil];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:longPress];
@@ -113,7 +121,7 @@
                     snapshot.center = center;
                     snapshot.transform = CGAffineTransformMakeScale(1.05, 1.05);
                     snapshot.alpha = 0.98;
-                    cell.backgroundColor = [UIColor colorWithRed:(238.0/255) green:(238.0/255) blue:(238.0/255) alpha:1.0];
+                    cell.backgroundColor = [UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0];
                     cell.textView.hidden = YES;
                     cell.tweetId.hidden = YES;
                     
@@ -167,12 +175,19 @@
 
 - (void) publishTweets:(id)sender
 {
+    PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
+//    [self.navigationController pushViewController:publish animated:YES];
     
+//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self presentViewController:publish animated:YES completion:nil];
+
 }
 
 - (void) displaySettings:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    SettingsTableViewController *settings = [[SettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *settingsNav = [[UINavigationController alloc] initWithRootViewController:settings];
+    [self presentViewController:settingsNav animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source

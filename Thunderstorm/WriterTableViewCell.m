@@ -31,6 +31,7 @@
         [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]];
         [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
+        [self.textView setKeyboardType:UIKeyboardTypeTwitter];
     }
     return self;
 }
@@ -56,13 +57,13 @@
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     
-    CGSize containerSize = CGSizeMake(270, 300);
+    CGSize containerSize = CGSizeMake(300, 300);
     NSTextContainer *container = [[NSTextContainer alloc] initWithSize:containerSize];
     container.widthTracksTextView = YES;
     [layoutManager addTextContainer:container];
     [_textStorage addLayoutManager:layoutManager];
     
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(25,25,270,30) textContainer:container];
+    textView = [[UITextView alloc] initWithFrame:CGRectMake(10,25,300,30) textContainer:container];
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
     
