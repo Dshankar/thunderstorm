@@ -8,50 +8,48 @@
 
 #import "PublishViewController.h"
 #import "UIColor+ThunderColors.h"
+#import "Settings.h"
+#import <Social/Social.h>
 
 @interface PublishViewController ()
+
+@property (nonatomic, strong) NSArray *tweets;
+@property (nonatomic) NSUInteger currentIndex;
+@property (nonatomic, strong) NSTimer *taskTimer;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+@property (nonatomic, strong) UIButton *cancelButton;
 
 @end
 
 @implementation PublishViewController
-@synthesize durationOptions;
-@synthesize tv;
+
+@synthesize tweets;
+@synthesize currentIndex;
+@synthesize cancelButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        UIButton *publish = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [publish addTarget:self action:@selector(publishToTwitter:) forControlEvents:UIControlEventTouchUpInside];
-        [publish setFrame:CGRectMake(0, 508, 320, 60)];
-//        [publish setFrame:CGRectMake(0, 350, 200, 60)];
-        [publish setTitle:@"Publish to Twitter" forState:UIControlStateNormal];
-        [publish.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:20.0f]];
-        [publish setTitleColor:[UIColor colorWithWhite:1.0 alpha:1.0] forState:UIControlStateNormal];
-        [publish setBackgroundColor:[UIColor linkBlue]];
-        [self.view addSubview:publish];
-        
-        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        cancelButton.frame = CGRectMake(0, 20, 36, 36);
-        UIImageView *cancelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 16, 16)];
-        [cancelImageView setImage:[UIImage imageNamed:@"close.png"]];
-        [cancelButton addSubview:cancelImageView];
-        [cancelButton addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
+        CGFloat deviceHeight = UIScreen.mainScreen.bounds.size.height;
+        cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancelButton addTarget:self action:@selector(cancelPublishAndDismissView:) forControlEvents:UIControlEventTouchUpInside];
+        [cancelButton setFrame:CGRectMake(0, deviceHeight - 60, 320, 60)];
+        [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancelButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:20.0f]];
+        [cancelButton setTitleColor:[UIColor colorWithWhite:1.0 alpha:1.0] forState:UIControlStateNormal];
+        [cancelButton setBackgroundColor:[UIColor mutedGray]];
         [self.view addSubview:cancelButton];
+        
+        UIImageView *twitterImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"twitter.png"]];
+        [twitterImage setFrame:CGRectMake(90,(deviceHeight - 114)/2,140,114)];
+        [self.view addSubview:twitterImage];
 
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         
 //        [self.view setBackgroundColor:[UIColor colorWithRed:(220.0/255) green:(220.0/255) blue:(220.0/255) alpha:1.0]];
-        [self.view setBackgroundColor:[UIColor whiteColor]];
-        
-        self.tv = [[UITableView alloc] initWithFrame:CGRectMake(0, 200, 320, 178) style:UITableViewStylePlain];
-        tv.delegate = self;
-        tv.dataSource = self;
-        [self.tv setScrollEnabled:NO];
-        
-        [self.view addSubview:self.tv];
+//        [self.view setBackgroundColor:[UIColor whiteColor]];
     }
     return self;
 }
@@ -59,82 +57,144 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-    // hides the navigation bar's bottom 1px grey border
-//    CGRect bar = CGRectMake(0, 0, 320, 64);
-//    UIGraphicsBeginImageContext(bar.size);
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    CGContextSetFillColorWithColor(ctx, [UIColor whiteColor].CGColor);
-//    CGContextFillRect(ctx, bar);
-//    UIImage *barImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-//    [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
+    self.backgroundTask = UIBackgroundTaskInvalid;
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    self.durationOptions = @[@"Instant", @"5 seconds", @"15 seconds", @"Exponential"];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return [self.durationOptions count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
-    static NSString *CellIdentifier = @"DurationCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [cell.textLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:20.0f]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+-(void)beginPublishingTweets:(NSArray *)tweetData
+{
+    self.tweets = tweetData;
+    self.currentIndex = 0;
+    
+    float duration = 0;
+    Settings *settings = [Settings getInstance];
+    switch(settings.selectedDuration.intValue){
+        case 0:
+            duration = 0.1;
+            break;
+        case 1:
+            duration = 2.0;
+            break;
+        case 2:
+            duration = 5.0;
+            break;
+        case 3:
+            duration = 15.0;
+            break;
+    };
+    
+    // publish first tweet with zero delay, and the subsequent ones with a delay.
+    // synchronized to avoid duplicate
+    @synchronized(self){
+        [self publishTweets];
+        self.taskTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(publishTweets) userInfo:nil repeats:YES];
     }
-    [cell.textLabel setText:[self.durationOptions objectAtIndex:indexPath.row]];
-    return cell;
+    
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)dealloc
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if(cell.accessoryType != UITableViewCellAccessoryCheckmark){
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        for (int c = 0; c < [self.durationOptions count]; c++) {
-            if(c != indexPath.row){
-                cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:c inSection:0]];
-                [cell setAccessoryType:UITableViewCellAccessoryNone];
-            }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)enterBackground:(NSNotification *)notification
+{
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        NSLog(@"Background expired. Stop background tasks.");
+        if(self.backgroundTask != UIBackgroundTaskInvalid){
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+            self.backgroundTask = UIBackgroundTaskInvalid;
         }
+    }];
+}
+
+-(void)enterForeground:(NSNotification *)notification
+{
+    if(self.backgroundTask != UIBackgroundTaskInvalid){
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)publishTweets
+{    
+    if(currentIndex < tweets.count){
+        NSURL *postTweetURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+        NSDictionary *postParams = @{
+                                     @"status":[NSString stringWithFormat:@"%i/%@",currentIndex+1,[tweets objectAtIndex:currentIndex]]
+                                     };
+        SLRequest *req = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:postTweetURL parameters:postParams];
+        
+        Settings *settings = [Settings getInstance];
+        [req setAccount:settings.account];
+        [req performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+            if(responseData){
+                NSLog(@"Tweet %i/ HTTP %d", currentIndex+1, urlResponse.statusCode);
+                
+                if(urlResponse.statusCode == 200){
+                    int nextIndex = currentIndex + 1;
+                    
+                    if(nextIndex >= tweets.count){
+                        // done
+                        if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+                            // modify the logo
+                            NSLog(@"Foreground. Display complete and hide UI");
+                            // show success
+                            [self performSelectorOnMainThread:@selector(displaySuccess) withObject:nil waitUntilDone:YES];
+                            NSLog(@"Showing Done Button");
+                        } else {
+                            NSLog(@"Background. Finished All");
+                            NSLog(@"Background time remaining = %.1f seconds", UIApplication.sharedApplication.backgroundTimeRemaining);
+                        }
+                        
+                        [self invalidateTaskAndBackground];
+                    } else {
+                        // more to go
+                        if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+                            // modify the logo
+                            NSLog(@"Foreground. Display %i/%i progress", currentIndex+1, tweets.count);
+                        } else {
+                            NSLog(@"Background. Finished %i/", currentIndex+1);
+                            NSLog(@"Background time remaining = %.1f seconds", UIApplication.sharedApplication.backgroundTimeRemaining);
+                        }
+                        
+                        currentIndex++;
+                    }
+                } else {
+                    NSLog(@"Deal with error handling...");
+                    // if error, will reattempt to publish this tweet
+                    // that's OK, but should react (or else, infinite loop...)
+                }
+            }
+        }];
+    }
+}
+
+- (void)displaySuccess
+{
+    [cancelButton.titleLabel setText:@"Done"];
+    [cancelButton setBackgroundColor:[UIColor successGreen]];
+}
+
+- (void)cancelPublishAndDismissView:(id)sender
+{
+    [self invalidateTaskAndBackground];
     
-    NSLog(@"ContentSizeW %f FrameW %f", tableView.contentSize.height, tableView.frame.size.height);
+    [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (void)dismissView:(id)sender
+- (void)invalidateTaskAndBackground
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)publishToTwitter:(id)sender
-{
+    [self.taskTimer invalidate];
+    self.taskTimer = nil;
+    if(self.backgroundTask != UIBackgroundTaskInvalid){
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
+    }
     
 }
 

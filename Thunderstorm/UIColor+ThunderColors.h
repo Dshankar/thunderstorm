@@ -14,5 +14,6 @@
 + (UIColor *)mutedGray;
 + (UIColor *)errorRed;
 + (UIColor *)linkBlue;
++ (UIColor *)successGreen;
 
 @end

@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PublishViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface PublishViewController : UIViewController
 
-@property (nonatomic, retain) NSArray *durationOptions;
-@property (nonatomic, strong) UITableView *tv;
+-(void)beginPublishingTweets:(NSArray *)tweetData;
 
 @end

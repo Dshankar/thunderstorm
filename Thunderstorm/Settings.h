@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Accounts/Accounts.h>
 
 @interface Settings : NSObject {
     NSArray *durationOptions;
     NSNumber *selectedDuration;
+    ACAccount *account;
 }
 
 @property (nonatomic, retain) NSArray *durationOptions;
 @property (nonatomic, retain) NSNumber *selectedDuration;
+@property (nonatomic, retain) ACAccount *account;
 
 +(Settings *)getInstance;
 

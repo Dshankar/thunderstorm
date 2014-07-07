@@ -60,11 +60,11 @@
     self.tableView.rowHeight = 165;
 //    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
     
-    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", @"when Uber has no competition, like in NYC, it is still very expensive 'UberX is still more expensive in NYC than taxis'", @"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", nil];
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse www.google.com", @"@Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", @"when Uber has no competition, like in @NYC, it is still very expensive 'UberX is still more expensive in NYC than taxis'", @"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", nil];
 
 //    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
 
-    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], nil];
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], nil];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:longPress];
@@ -171,10 +171,20 @@
 {
     PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
 //    [self.navigationController pushViewController:publish animated:YES];
+    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
+    self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:publish animated:NO completion:nil];
     
-//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:publish animated:YES completion:nil];
-
+    
+    publish.view.alpha = 0;
+    [UIView animateWithDuration:0.5 animations:^{
+        publish.view.alpha = 1;
+    }];
+    
+    self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [publish beginPublishingTweets:self.tweetData];
 }
 
 - (void) displaySettings:(id)sender
@@ -245,17 +255,18 @@
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
     [cell.tweetId setText:[NSString stringWithFormat:@"%d/", indexPath.row + 1]];
     if(indexPath.row + 1 >= 10){
-        [cell.tweetId setFrame:CGRectMake(4, 4, 28, 20)];
-        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,28,20)];
+        [cell.tweetId setFrame:CGRectMake(4, 4, 28, 16)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,28,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
     } else {
-        [cell.tweetId setFrame:CGRectMake(4, 4, 18, 20)];
-        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,20)];
+        [cell.tweetId setFrame:CGRectMake(4, 4, 18, 16)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
     }
     
     CGRect tvFrame = [cell.textView frame];
-    tvFrame.size.height = ([(NSNumber *)[self.tweetNumberOfLines objectAtIndex:indexPath.row] intValue] * 28) + 8;
+    float lineHeight = cell.textView.font.lineHeight;
+    tvFrame.size.height = ([(NSNumber *)[self.tweetNumberOfLines objectAtIndex:indexPath.row] intValue] * lineHeight) + 8;
     [cell.textView setFrame:tvFrame];
     
     cell.textView.tag = indexPath.row;
@@ -266,7 +277,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
-    return (25.839844 * numLines.intValue) + 50;
+    float lineHeight = [UIFont fontWithName:@"CrimsonText-Roman" size:19.0f].lineHeight;
+    return (lineHeight * numLines.intValue) + 20 + 8;
 }
 
 
@@ -449,7 +461,7 @@
     if(calcNumberOfLines != prevNumberOfLines.intValue){
         [tweetNumberOfLines setObject:[NSNumber numberWithInt:calcNumberOfLines] atIndexedSubscript:tv.tag];
         CGRect tvFrame = [tv frame];
-        tvFrame.size.height = (calcNumberOfLines * 28) + 8;
+        tvFrame.size.height = tv.contentSize.height + 8;
         [tv setFrame:tvFrame];
 
         // This is a hack for the iOS7 UITextView paste bug

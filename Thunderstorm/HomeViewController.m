@@ -11,6 +11,7 @@
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 #import "UIColor+ThunderColors.h"
+#import "Settings.h"
 
 @interface HomeViewController ()
 @property (nonatomic) ACAccountStore *accountStore;
@@ -43,14 +44,16 @@
         group.motionEffects = @[horizontalMotionEffect];
         [bg addMotionEffect:group];
         
-        UILabel *mainTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 280, 100)];
+        CGFloat deviceHeight = UIScreen.mainScreen.bounds.size.height;
+        
+        UILabel *mainTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, deviceHeight - 60 - 58 - 50 - 100, 280, 100)];
         [mainTitle setNumberOfLines:2];
         [mainTitle setText:@"Welcome to\nThunderstorm"];
         [mainTitle setFont:[UIFont fontWithName:@"Lato-Bold" size:38.0f]];
         [mainTitle setTextColor:[UIColor colorWithWhite:1.0 alpha:1.0]];
         [self.view addSubview:mainTitle];
         
-        UILabel *secondaryTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, 400, 280, 50)];
+        UILabel *secondaryTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, deviceHeight - 60 - 58 - 50, 280, 50)];
         [secondaryTitle setNumberOfLines:2];
         [secondaryTitle setText:@"Compose long-form opinions &\nPublish to Twitter"];
         [secondaryTitle setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];
@@ -60,7 +63,7 @@
         
         UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [login addTarget:self action:@selector(loginWithTwitter:) forControlEvents:UIControlEventTouchUpInside];
-        [login setFrame:CGRectMake(0, 508, 320, 60)];
+        [login setFrame:CGRectMake(0, deviceHeight - 60, 320, 60)];
         [login setTitle:@"Login with Twitter" forState:UIControlStateNormal];
         [login.titleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:20.0f]];
         [login setTitleColor:[UIColor colorWithWhite:1.0 alpha:1.0] forState:UIControlStateNormal];
@@ -109,6 +112,8 @@
                 }
             }
         }];
+    } else {
+        // user doesn't have Twitter accounts setup. Need to first have Twitter accounts on iOS in order to grant access to it. Prompt the user?
     }
 }
 
@@ -130,11 +135,11 @@
         NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
         ACAccount *chosenOne = [twitterAccounts objectAtIndex:buttonIndex];
         NSLog(@"Selected %@", chosenOne.username);
+        Settings *settings = [Settings getInstance];
+        settings.account = chosenOne;
         
         [self showWriteScreen];
     }
-    
-    
 }
 
 - (void)showWriteScreen

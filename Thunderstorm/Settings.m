@@ -11,6 +11,7 @@
 @implementation Settings
 @synthesize selectedDuration;
 @synthesize durationOptions;
+@synthesize account;
 
 static Settings *instance = nil;
 
@@ -19,8 +20,9 @@ static Settings *instance = nil;
     @synchronized(self){
         if(instance == nil){
             instance = [Settings new];
-            instance.durationOptions = @[@"Instant", @"5 seconds", @"15 seconds", @"Exponential"];
-            instance.selectedDuration = [NSNumber numberWithInt:0];
+            instance.durationOptions = @[@"Instant", @"2 seconds", @"5 seconds", @"15 seconds"];
+            instance.selectedDuration = [NSNumber numberWithInt:2];
+            instance.account = nil;
         }
     }
     return instance;

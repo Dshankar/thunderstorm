@@ -27,8 +27,8 @@
                 
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,18,20)];
-        [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]];
+        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,18,18)];
+        [tweetId setFont:[UIFont fontWithName:@"CrimsonText-Roman" size:19.0f]];
         [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
         [self.textView setKeyboardType:UIKeyboardTypeTwitter];
@@ -50,7 +50,7 @@
 
 - (void) createTextView
 {
-    NSDictionary *attrs = @{NSFontAttributeName: [UIFont fontWithName:@"CrimsonText-Roman" size:20.0f]};
+    NSDictionary *attrs = @{NSFontAttributeName: [UIFont fontWithName:@"CrimsonText-Roman" size:19.0f]};
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"1/What's on your mind?" attributes:attrs];
     _textStorage = [SyntaxHighlightTextStorage new];
     [_textStorage appendAttributedString:attrString];
@@ -63,12 +63,9 @@
     [layoutManager addTextContainer:container];
     [_textStorage addLayoutManager:layoutManager];
     
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(10,25,300,30) textContainer:container];
+    textView = [[UITextView alloc] initWithFrame:CGRectMake(10,10,300,30) textContainer:container];
     [textView setTextContainerInset:UIEdgeInsetsZero];
     [textView setContentInset:UIEdgeInsetsZero];
-    
-    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,20)];
-    textView.textContainer.exclusionPaths = @[exclusionPath];
     
     [self.contentView addSubview:textView];
 }
