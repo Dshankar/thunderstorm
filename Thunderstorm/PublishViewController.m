@@ -10,6 +10,7 @@
 #import "UIColor+ThunderColors.h"
 #import "Settings.h"
 #import <Social/Social.h>
+#import "DPMeterView.h"
 
 @interface PublishViewController ()
 
@@ -18,6 +19,7 @@
 @property (nonatomic, strong) NSTimer *taskTimer;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 @property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong) DPMeterView *progressView;
 
 @end
 
@@ -44,12 +46,24 @@
         
         UIImageView *twitterImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"twitter.png"]];
         [twitterImage setFrame:CGRectMake(90,(deviceHeight - 114)/2,140,114)];
-        [self.view addSubview:twitterImage];
+//        [self.view addSubview:twitterImage];
 
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         
 //        [self.view setBackgroundColor:[UIColor colorWithRed:(220.0/255) green:(220.0/255) blue:(220.0/255) alpha:1.0]];
 //        [self.view setBackgroundColor:[UIColor whiteColor]];
+        
+        
+        _progressView = [[DPMeterView alloc] initWithFrame:CGRectMake(90,(deviceHeight - 114)/2,140,114)];
+//        CGPathRef shape = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 140, 114)].CGPath;
+//        [_progressView setShape:shape];
+        [_progressView setMeterType:DPMeterTypeLinearVertical];
+        [_progressView setProgressTintColor:[UIColor linkBlue]];
+        [_progressView setTrackTintColor:[UIColor whiteColor]];
+        
+        
+        [self.view addSubview:_progressView];
+        [_progressView setProgress:0.90 animated:YES];
     }
     return self;
 }
@@ -89,6 +103,7 @@
     
     // publish first tweet with zero delay, and the subsequent ones with a delay.
     // synchronized to avoid duplicate
+    
     @synchronized(self){
         [self publishTweets];
         self.taskTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(publishTweets) userInfo:nil repeats:YES];
@@ -157,6 +172,7 @@
                         if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
                             // modify the logo
                             NSLog(@"Foreground. Display %i/%i progress", currentIndex+1, tweets.count);
+                            [self performSelectorOnMainThread:@selector(updateProgress) withObject:nil waitUntilDone:YES];
                         } else {
                             NSLog(@"Background. Finished %i/", currentIndex+1);
                             NSLog(@"Background time remaining = %.1f seconds", UIApplication.sharedApplication.backgroundTimeRemaining);
@@ -174,8 +190,15 @@
     }
 }
 
+- (void)updateProgress
+{
+    [_progressView setProgress:(currentIndex+1.0)/tweets.count animated:YES];
+}
+
 - (void)displaySuccess
 {
+    [_progressView setProgress:1.0 animated:YES];
+    [_progressView setProgressTintColor:[UIColor successGreen]];
     [cancelButton.titleLabel setText:@"Done"];
     [cancelButton setBackgroundColor:[UIColor successGreen]];
 }
