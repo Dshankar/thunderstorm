@@ -20,6 +20,9 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+ 
+    NSDictionary *defaultDefaults = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"selectedDuration", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultDefaults];
     
     return YES;
 }

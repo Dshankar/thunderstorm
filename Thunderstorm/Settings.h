@@ -20,5 +20,6 @@
 @property (nonatomic, retain) ACAccount *account;
 
 +(Settings *)getInstance;
+-(void)selectDuration:(NSNumber*)index;
 
 @end

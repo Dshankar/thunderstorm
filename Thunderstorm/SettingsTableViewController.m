@@ -184,7 +184,7 @@
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if(cell.accessoryType != UITableViewCellAccessoryCheckmark){
                 [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-                settings.selectedDuration = [NSNumber numberWithInt:indexPath.row];
+                [settings selectDuration:[NSNumber numberWithInt:indexPath.row]];
                 for (int c = 0; c < [self.settings.durationOptions count]; c++) {
                     if(c != indexPath.row){
                         cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:c inSection:0]];
