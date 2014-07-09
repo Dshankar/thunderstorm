@@ -104,16 +104,23 @@
         ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         [self.accountStore requestAccessToAccountsWithType:twitterAccountType options:NULL completion:^(BOOL granted, NSError *error){
             if(granted){
+                NSLog(@"UH");
                 NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
                 if([twitterAccounts count] > 0){
                     [self performSelectorOnMainThread:@selector(showActionSheetWithAccounts:) withObject:twitterAccounts waitUntilDone:YES];
                 } else {
-                    NSLog(@"TODO USER HAS NO TWITTER ACCOUNTS IN IOS.");
+                    NSLog(@"No accounts");
+                    UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"Add a Twitter Account" message:@"To use Thunderstorm, add a Twitter account to your iOS device in the Settings app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [noAccounts show];
                 }
+            } else {
+                NSLog(@"Not granted access");
             }
         }];
     } else {
-        // user doesn't have Twitter accounts setup. Need to first have Twitter accounts on iOS in order to grant access to it. Prompt the user?
+        NSLog(@"No accounts");
+        UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"Add a Twitter Account" message:@"To use Thunderstorm, add a Twitter account to your iOS device in the Settings app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [noAccounts show];
     }
 }
 

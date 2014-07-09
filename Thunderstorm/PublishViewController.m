@@ -65,7 +65,7 @@
         
         
         [self.view addSubview:_progressView];
-        [_progressView setProgress:0.25 animated:YES];
+        [_progressView setProgress:0.01 animated:YES];
     }
     return self;
 }
