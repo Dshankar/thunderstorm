@@ -15,6 +15,7 @@
 @interface PublishViewController ()
 
 @property (nonatomic, strong) NSArray *tweets;
+@property (nonatomic) NSString *replyID;
 @property (nonatomic) NSUInteger currentIndex;
 @property (nonatomic, strong) NSTimer *taskTimer;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
@@ -26,6 +27,7 @@
 @implementation PublishViewController
 
 @synthesize tweets;
+@synthesize replyID;
 @synthesize currentIndex;
 @synthesize cancelButton;
 
@@ -63,7 +65,7 @@
         
         
         [self.view addSubview:_progressView];
-        [_progressView setProgress:0.90 animated:YES];
+        [_progressView setProgress:0.25 animated:YES];
     }
     return self;
 }
@@ -83,12 +85,13 @@
 {
     self.tweets = tweetData;
     self.currentIndex = 0;
+    self.replyID = NULL;
     
     float duration = 0;
     Settings *settings = [Settings getInstance];
     switch(settings.selectedDuration.intValue){
         case 0:
-            duration = 0.1;
+            duration = 0.4;
             break;
         case 1:
             duration = 2.0;
@@ -105,8 +108,12 @@
     // synchronized to avoid duplicate
     
     @synchronized(self){
+        
         [self publishTweets];
-        self.taskTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(publishTweets) userInfo:nil repeats:YES];
+
+        self.taskTimer = [NSTimer
+                          scheduledTimerWithTimeInterval:duration target:self
+                          selector:@selector(publishTweets) userInfo:nil repeats:YES];
     }
     
 }
@@ -135,12 +142,14 @@
     }
 }
 
--(void)publishTweets
-{    
+-(void) publishTweets
+{
+
     if(currentIndex < tweets.count){
         NSURL *postTweetURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
         NSDictionary *postParams = @{
-                                     @"status":[NSString stringWithFormat:@"%i/%@",currentIndex+1,[tweets objectAtIndex:currentIndex]]
+                                     @"status":[NSString stringWithFormat:@"%i/%@",currentIndex+1,[tweets objectAtIndex:currentIndex]],
+                                     @"in_reply_to_status_id" : [NSString stringWithFormat:@"%@",self.replyID]
                                      };
         SLRequest *req = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:postTweetURL parameters:postParams];
         
@@ -149,6 +158,17 @@
         [req performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
             if(responseData){
                 NSLog(@"Tweet %i/ HTTP %d", currentIndex+1, urlResponse.statusCode);
+                //        NSLog(@" In Reply To ID %@",self.replyID);
+
+                NSError *error;
+                NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseData
+                                                                         options:0
+                                                 error:&error];
+
+                
+                if (error == nil) {
+                    self.replyID = [jsonDict objectForKey:@"id_str"];
+                }
                 
                 if(urlResponse.statusCode == 200){
                     int nextIndex = currentIndex + 1;
@@ -181,9 +201,14 @@
                         currentIndex++;
                     }
                 } else {
-                    NSLog(@"Deal with error handling...");
                     // if error, will reattempt to publish this tweet
                     // that's OK, but should react (or else, infinite loop...)
+
+                    // Error immediately.
+                    [self showFailure];
+                    
+                    [self invalidateTaskAndBackground];
+
                 }
             }
         }];
@@ -193,6 +218,25 @@
 - (void)updateProgress
 {
     [_progressView setProgress:(currentIndex+1.0)/tweets.count animated:YES];
+}
+
+- (void)showFailure
+{
+    [_progressView setProgressTintColor:[UIColor errorRed]];
+    [cancelButton.titleLabel setText:@"Error"];
+    [cancelButton setBackgroundColor:[UIColor errorRed]];
+
+//    [UIView animateWithDuration:0.2
+//                     animations:^{
+//                         _progressView.transform = CGAffineTransformMakeRotation(-1*M_PI);
+//                     }
+//                     completion:^(BOOL finished){
+//
+//                     }];
+
+    [_progressView setProgress:0 animated:YES];
+
+
 }
 
 - (void)displaySuccess
