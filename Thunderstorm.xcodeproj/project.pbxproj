@@ -10,6 +10,8 @@
 		F90384BD196B6228008F0538 /* DPMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384BC196B6228008F0538 /* DPMeterView.m */; };
 		F90384C1196BE814008F0538 /* new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384BF196BE814008F0538 /* new@2x.png */; };
 		F90384C2196BE814008F0538 /* trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384C0196BE814008F0538 /* trash@2x.png */; };
+		F90384C5196DE604008F0538 /* CreateTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384C4196DE604008F0538 /* CreateTimelineViewController.m */; };
+		F90384C8196DE762008F0538 /* CreateTimelineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384C7196DE762008F0538 /* CreateTimelineTableViewCell.m */; };
 		F90EF23D1963EA03007211CC /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF23C1963EA03007211CC /* keyboard@2x.png */; };
 		F90EF2401964C0F9007211CC /* PublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF23F1964C0F9007211CC /* PublishViewController.m */; };
 		F90EF2461964E40E007211CC /* publish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF2451964E40E007211CC /* publish@2x.png */; };
@@ -63,6 +65,10 @@
 		F90384BC196B6228008F0538 /* DPMeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPMeterView.m; sourceTree = "<group>"; };
 		F90384BF196BE814008F0538 /* new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new@2x.png"; sourceTree = "<group>"; };
 		F90384C0196BE814008F0538 /* trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash@2x.png"; sourceTree = "<group>"; };
+		F90384C3196DE604008F0538 /* CreateTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTimelineViewController.h; sourceTree = "<group>"; };
+		F90384C4196DE604008F0538 /* CreateTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTimelineViewController.m; sourceTree = "<group>"; };
+		F90384C6196DE762008F0538 /* CreateTimelineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTimelineTableViewCell.h; sourceTree = "<group>"; };
+		F90384C7196DE762008F0538 /* CreateTimelineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTimelineTableViewCell.m; sourceTree = "<group>"; };
 		F90EF23C1963EA03007211CC /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
 		F90EF23E1964C0F9007211CC /* PublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishViewController.h; sourceTree = "<group>"; };
 		F90EF23F1964C0F9007211CC /* PublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishViewController.m; sourceTree = "<group>"; };
@@ -199,6 +205,10 @@
 				F9ABA9D51957A6AA0019C064 /* WriterTableViewCell.m */,
 				F9ABA9CE195651A70019C064 /* SyntaxHighlightTextStorage.h */,
 				F9ABA9CF195651A70019C064 /* SyntaxHighlightTextStorage.m */,
+				F90384C3196DE604008F0538 /* CreateTimelineViewController.h */,
+				F90384C4196DE604008F0538 /* CreateTimelineViewController.m */,
+				F90384C6196DE762008F0538 /* CreateTimelineTableViewCell.h */,
+				F90384C7196DE762008F0538 /* CreateTimelineTableViewCell.m */,
 				F90EF23E1964C0F9007211CC /* PublishViewController.h */,
 				F90EF23F1964C0F9007211CC /* PublishViewController.m */,
 				F9BA03C2195A55030064F12E /* UIColor+ThunderColors.h */,
@@ -381,6 +391,7 @@
 				F90EF2561966378B007211CC /* Settings.m in Sources */,
 				F9ABA9AB1955AC220019C064 /* AppDelegate.m in Sources */,
 				F9ABA9D61957A6AA0019C064 /* WriterTableViewCell.m in Sources */,
+				F90384C8196DE762008F0538 /* CreateTimelineTableViewCell.m in Sources */,
 				F90EF25319663207007211CC /* WebsiteViewController.m in Sources */,
 				F9BA03C0195A52830064F12E /* TwitterText.m in Sources */,
 				F9BA03C7195B73C30064F12E /* HomeViewController.m in Sources */,
@@ -389,6 +400,7 @@
 				F90EF2401964C0F9007211CC /* PublishViewController.m in Sources */,
 				F90EF25019661E52007211CC /* SettingsTableViewController.m in Sources */,
 				F9BA03C1195A52830064F12E /* TwitterTextEntity.m in Sources */,
+				F90384C5196DE604008F0538 /* CreateTimelineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

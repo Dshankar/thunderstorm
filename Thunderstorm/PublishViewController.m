@@ -14,6 +14,7 @@
 
 @interface PublishViewController ()
 
+@property (nonatomic, strong) NSString *timelineId;
 @property (nonatomic, strong) NSArray *tweets;
 @property (nonatomic) NSString *replyID;
 @property (nonatomic) NSUInteger currentIndex;
@@ -81,8 +82,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
--(void)beginPublishingTweets:(NSArray *)tweetData
+-(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)timelineId
 {
+    NSLog(@"Begin Publishing tweets to %@", timelineId);
+    self.timelineId = timelineId;
     self.tweets = tweetData;
     self.currentIndex = 0;
     self.replyID = NULL;
@@ -108,12 +111,13 @@
     // synchronized to avoid duplicate
     
     @synchronized(self){
+        NSLog(@"1");
         
         [self publishTweets];
-
-        self.taskTimer = [NSTimer
-                          scheduledTimerWithTimeInterval:duration target:self
-                          selector:@selector(publishTweets) userInfo:nil repeats:YES];
+        NSLog(@"1 doneish");
+//        self.taskTimer = [NSTimer timerWithTimeInterval:duration target:self
+//                          selector:@selector(publishTweets) userInfo:nil repeats:YES];
+//        [self.taskTimer fire];
     }
     
 }
@@ -142,9 +146,38 @@
     }
 }
 
+-(void) addTweetToTimeline:(NSString *)tweetId
+{
+    Settings *settings = [Settings getInstance];
+    NSURL *addToTimelineURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/beta/timelines/custom/add.json"];
+    NSDictionary *addToTimelineParams = @{
+                                           @"id":self.timelineId,
+                                           @"tweet_id":tweetId,
+                                           @"include_entities":@"1",
+                                           @"include_user_entities":@"1",
+                                           @"include_cards":@"1",
+                                           @"send_error_codes":@"1"
+                                           };
+    
+    SLRequest *req = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:addToTimelineURL parameters:addToTimelineParams];
+    
+    [req setAccount:settings.account];
+    [req performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+        if(responseData){
+            NSLog(@"Add tweet to timeline HTTP %li", (long)urlResponse.statusCode);
+            NSError *jsonError;
+            NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
+//            NSLog(@"%@", response);
+            if(jsonError == nil){
+                NSLog(@"Added tweet id %@ to timeline %@", tweetId, self.timelineId);
+            }
+        }
+    }];
+}
+
 -(void) publishTweets
 {
-
+    NSLog(@"publishTweets %i", currentIndex);
     if(currentIndex < tweets.count){
         NSURL *postTweetURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
         NSDictionary *postParams = @{
@@ -171,6 +204,9 @@
                 }
                 
                 if(urlResponse.statusCode == 200){
+                    
+                    [self addTweetToTimeline:self.replyID];
+                    
                     int nextIndex = currentIndex + 1;
                     
                     if(nextIndex >= tweets.count){
@@ -199,14 +235,31 @@
                         }
                         
                         currentIndex++;
+                        
+                        float duration = 0;
+                        Settings *settings = [Settings getInstance];
+                        switch(settings.selectedDuration.intValue){
+                            case 0:
+                                duration = 0.4;
+                                break;
+                            case 1:
+                                duration = 2.0;
+                                break;
+                            case 2:
+                                duration = 5.0;
+                                break;
+                            case 3:
+                                duration = 15.0;
+                                break;
+                        };
+                        [self performSelector:@selector(publishTweets) withObject:nil afterDelay:duration];
                     }
                 } else {
                     // if error, will reattempt to publish this tweet
                     // that's OK, but should react (or else, infinite loop...)
 
                     // Error immediately.
-                    [self showFailure];
-                    
+                    [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:NO];
                     [self invalidateTaskAndBackground];
 
                 }

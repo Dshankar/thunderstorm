@@ -104,7 +104,6 @@
         ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         [self.accountStore requestAccessToAccountsWithType:twitterAccountType options:NULL completion:^(BOOL granted, NSError *error){
             if(granted){
-                NSLog(@"UH");
                 NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
                 if([twitterAccounts count] > 0){
                     [self performSelectorOnMainThread:@selector(showActionSheetWithAccounts:) withObject:twitterAccounts waitUntilDone:YES];

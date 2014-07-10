@@ -10,6 +10,6 @@
 
 @interface PublishViewController : UIViewController
 
--(void)beginPublishingTweets:(NSArray *)tweetData;
+-(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)timelineId;
 
 @end

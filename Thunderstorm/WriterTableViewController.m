@@ -11,6 +11,7 @@
 #import "UIColor+ThunderColors.h"
 #import "PublishViewController.h"
 #import "SettingsTableViewController.h"
+#import "CreateTimelineViewController.h"
 
 @interface WriterTableViewController ()
 @end
@@ -20,6 +21,7 @@
     UIBarButtonItem* _publishButton;
     NSString* _DEFAULT_TWEET_PROMPT;
     UIResponder* currentlyEditing;
+    BOOL isViewingWriterController;
 }
 @synthesize tweetData;
 @synthesize tweetNumberOfLines;
@@ -30,6 +32,7 @@
     if (self) {
         // Custom initialization
         _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
+        isViewingWriterController = YES;
         
 //        _publishButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish" style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
 //        UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
@@ -47,6 +50,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    isViewingWriterController = YES;
 }
 
 - (void)viewDidLoad
@@ -169,22 +178,9 @@
 
 - (void) publishTweets:(id)sender
 {
-    PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
-//    [self.navigationController pushViewController:publish animated:YES];
-    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
-    self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-//    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:publish animated:NO completion:nil];
-    
-    
-    publish.view.alpha = 0;
-    [UIView animateWithDuration:0.5 animations:^{
-        publish.view.alpha = 1;
-    }];
-    
-    self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
-    
-    [publish beginPublishingTweets:self.tweetData];
+    CreateTimelineViewController *create = [[CreateTimelineViewController alloc] initWithStyle:UITableViewStyleGrouped Tweets:tweetData];
+    [self.navigationController pushViewController:create animated:YES];
+    isViewingWriterController = NO;
 }
 
 - (void) displaySettings:(id)sender
@@ -382,14 +378,15 @@
 
 - (void)hideKeyboard:(id)sender
 {
-    if(currentlyEditing){
-        [currentlyEditing resignFirstResponder];
-        currentlyEditing = nil;
+    if(isViewingWriterController){
+        if(currentlyEditing){
+            [currentlyEditing resignFirstResponder];
+            currentlyEditing = nil;
+        }
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-
 }
 
 - (void)addNewCell:(id)sender
@@ -417,30 +414,34 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
-    [UIView animateWithDuration:duration animations:^{
-        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0);
-        [self.tableView setContentInset:contentInsets];
-        [self.tableView setScrollIndicatorInsets:contentInsets];
-    }];
+    if(isViewingWriterController){
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0);
+            [self.tableView setContentInset:contentInsets];
+            [self.tableView setScrollIndicatorInsets:contentInsets];
+        }];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    if(isViewingWriterController){
+        NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        [UIView animateWithDuration:duration animations:^{
+            UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+            [self.tableView setContentInset:contentInsets];
+            [self.tableView setScrollIndicatorInsets:contentInsets];
+        }];
     
-    [UIView animateWithDuration:duration animations:^{
-        UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-        [self.tableView setContentInset:contentInsets];
-        [self.tableView setScrollIndicatorInsets:contentInsets];
-    }];
-    
-    // the statusBar & navigationBar will un-hide if user actively chooses to hide keyboard
+        // the statusBar & navigationBar will un-hide if user actively chooses to hide keyboard
+    }
 }
 
 - (void) textViewDidBeginEditing:(UITextView *) tv {
