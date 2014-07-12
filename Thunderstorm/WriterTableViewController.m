@@ -69,11 +69,11 @@
     self.tableView.rowHeight = 165;
 //    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
     
-    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse www.google.com", @"@Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", @"when Uber has no competition, like in @NYC, it is still very expensive 'UberX is still more expensive in NYC than taxis'", @"Lyft is still a great co and will be able to raise $, but it will get worse terms & valuation when showing worse growth/rev/profit nums", @"Lyft meanwhile is trying to expand in non-uber US cities and let Uber take the first-mover blows from foreign unions and governments", nil];
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Call me Ishmael.", @"Some years ago--never mind how long precisely--having little or no money in my purse, and nothing particular to interest me on shore,", @"I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating", @"the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find", @"myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever", nil];
 
 //    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
 
-    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], nil];
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], nil];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:longPress];

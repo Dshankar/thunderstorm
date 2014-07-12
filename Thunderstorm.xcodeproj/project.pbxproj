@@ -12,6 +12,7 @@
 		F90384C2196BE814008F0538 /* trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384C0196BE814008F0538 /* trash@2x.png */; };
 		F90384C5196DE604008F0538 /* CreateTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384C4196DE604008F0538 /* CreateTimelineViewController.m */; };
 		F90384C8196DE762008F0538 /* CreateTimelineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384C7196DE762008F0538 /* CreateTimelineTableViewCell.m */; };
+		F90384CB196FDD59008F0538 /* PublishViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384CA196FDD59008F0538 /* PublishViewController2.m */; };
 		F90EF23D1963EA03007211CC /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF23C1963EA03007211CC /* keyboard@2x.png */; };
 		F90EF2401964C0F9007211CC /* PublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF23F1964C0F9007211CC /* PublishViewController.m */; };
 		F90EF2461964E40E007211CC /* publish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF2451964E40E007211CC /* publish@2x.png */; };
@@ -69,6 +70,8 @@
 		F90384C4196DE604008F0538 /* CreateTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTimelineViewController.m; sourceTree = "<group>"; };
 		F90384C6196DE762008F0538 /* CreateTimelineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTimelineTableViewCell.h; sourceTree = "<group>"; };
 		F90384C7196DE762008F0538 /* CreateTimelineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTimelineTableViewCell.m; sourceTree = "<group>"; };
+		F90384C9196FDD59008F0538 /* PublishViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishViewController2.h; sourceTree = "<group>"; };
+		F90384CA196FDD59008F0538 /* PublishViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishViewController2.m; sourceTree = "<group>"; };
 		F90EF23C1963EA03007211CC /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
 		F90EF23E1964C0F9007211CC /* PublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishViewController.h; sourceTree = "<group>"; };
 		F90EF23F1964C0F9007211CC /* PublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishViewController.m; sourceTree = "<group>"; };
@@ -217,6 +220,8 @@
 				F90EF24F19661E52007211CC /* SettingsTableViewController.m */,
 				F90EF25119663207007211CC /* WebsiteViewController.h */,
 				F90EF25219663207007211CC /* WebsiteViewController.m */,
+				F90384C9196FDD59008F0538 /* PublishViewController2.h */,
+				F90384CA196FDD59008F0538 /* PublishViewController2.m */,
 				F90384BE196B6DB3008F0538 /* DPMeterView */,
 				F9BA03BB195A52720064F12E /* Twitter-Text-Objc */,
 				F90EF2541966378B007211CC /* Settings.h */,
@@ -399,6 +404,7 @@
 				F9BA03C4195A55030064F12E /* UIColor+ThunderColors.m in Sources */,
 				F90EF2401964C0F9007211CC /* PublishViewController.m in Sources */,
 				F90EF25019661E52007211CC /* SettingsTableViewController.m in Sources */,
+				F90384CB196FDD59008F0538 /* PublishViewController2.m in Sources */,
 				F9BA03C1195A52830064F12E /* TwitterTextEntity.m in Sources */,
 				F90384C5196DE604008F0538 /* CreateTimelineViewController.m in Sources */,
 			);
