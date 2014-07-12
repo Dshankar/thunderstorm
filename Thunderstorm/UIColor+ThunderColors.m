@@ -12,8 +12,8 @@
 
 + (UIColor *)defaultGray
 {
-//    return [UIColor colorWithRed:(104.0/255) green:(110.0/255) blue:(119.0/255) alpha:1.0];
-    return [UIColor colorWithRed:(53.0/255) green:(57.0/255) blue:(63.0/255) alpha:1.0];
+    return [UIColor colorWithRed:(104.0/255) green:(110.0/255) blue:(119.0/255) alpha:1.0];
+//    return [UIColor colorWithRed:(53.0/255) green:(57.0/255) blue:(63.0/255) alpha:1.0];
 }
 
 + (UIColor *)successGreen

@@ -150,13 +150,15 @@
 
 - (void)showWriteScreen
 {
-    WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];
-    [navigation.navigationBar setBarTintColor:[UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0]];
-    [navigation.navigationBar setTranslucent:NO];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+//    WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStylePlain];
+//    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];
+//    [navigation.navigationBar setBarTintColor:[UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0]];
+//    [navigation.navigationBar setBarTintColor:[UIColor whiteColor]];
+//    [navigation.navigationBar setTranslucent:NO];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     
-    [self presentViewController:navigation animated:YES completion:nil];
+    WriterTableViewController *writer = [[WriterTableViewController alloc] init];
+    [self presentViewController:writer animated:YES completion:nil];
 }
 
 /*

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WriterTableViewCell : UITableViewCell
+@interface WriterTableViewCell : UITableViewCell <NSLayoutManagerDelegate>
 
 @property (nonatomic, retain) UITextView* textView;
 @property (nonatomic, retain) UILabel* tweetId;

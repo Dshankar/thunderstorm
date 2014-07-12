@@ -25,7 +25,8 @@
 }
 @synthesize tweetData;
 @synthesize tweetNumberOfLines;
-
+@synthesize tableView;
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -38,18 +39,53 @@
 //        UIFont* boldFont =  [UIFont fontWithName:@"Lato-Bold" size:19.0f];
 //        NSDictionary *mainFontAttributes = @{NSFontAttributeName : boldFont, NSForegroundColorAttributeName : [UIColor whiteColor]};
 //        [_publishButton setTitleTextAttributes:mainFontAttributes forState:UIControlStateNormal];
-        _publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
+//        _publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"settings"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
-        [self.navigationItem setLeftBarButtonItem:settingsButton];
-        [self.navigationItem setRightBarButtonItem:_publishButton];
+//        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"settings"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
+//        [self.navigationItem setLeftBarButtonItem:settingsButton];
+//        [self.navigationItem setRightBarButtonItem:_publishButton];
+        
+    }
+    return self;
+}
+ */
+
+- (id)init
+{
+    self = [super init];
+    if(self){
+        _DEFAULT_TWEET_PROMPT = @"What's on your mind?";
+        isViewingWriterController = YES;
+        
+        UIImage *publishImage = [UIImage imageNamed:@"publish.png"];
+        UIButton *publish = [UIButton buttonWithType:UIButtonTypeCustom];
+        [publish setFrame:CGRectMake(236.0, 20.0, 64.0, 30.0)];
+        [publish setBackgroundImage:publishImage forState:UIControlStateNormal];
+        [self.view addSubview:publish];
+        
+        UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 20.0, 206.0, 30.0)];
+        [tf setFont:[UIFont fontWithName:@"Lato-Bold" size:22.0f]];
+        [tf setPlaceholder:@"Title"];
+        [self.view addSubview:tf];
+        
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 60.0, 320.0, 508.0) style:UITableViewStylePlain];
+//        self.tableView.delegate = self;
+//        self.tableView.dataSource = self;
+        [self.tableView setDelegate:self];
+        [self.tableView setDataSource:self];
+        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
+        [self.tableView addGestureRecognizer:longPress];
+        
+        [self.view addSubview:self.tableView];
     }
     return self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -62,11 +98,11 @@
 {
     [super viewDidLoad];
  
-    [self.tableView setDelegate:self];
-    [self.tableView setDataSource:self];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//    [self.tableView setDelegate:self];
+//    [self.tableView setDataSource:self];
+//    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
-    self.tableView.rowHeight = 165;
+//    self.tableView.rowHeight = 165;
 //    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
     
     self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Call me Ishmael.", @"Some years ago--never mind how long precisely--having little or no money in my purse, and nothing particular to interest me on shore,", @"I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating", @"the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find", @"myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever", nil];
@@ -75,8 +111,8 @@
 
     self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], nil];
     
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
-    [self.tableView addGestureRecognizer:longPress];
+//    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
+//    [self.tableView addGestureRecognizer:longPress];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -251,17 +287,17 @@
     [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
     [cell.tweetId setText:[NSString stringWithFormat:@"%d/", indexPath.row + 1]];
     if(indexPath.row + 1 >= 10){
-        [cell.tweetId setFrame:CGRectMake(4, 4, 28, 16)];
-        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,28,16)];
+        [cell.tweetId setFrame:CGRectMake(4, 4, 30, 16)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,30,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
     } else {
-        [cell.tweetId setFrame:CGRectMake(4, 4, 18, 16)];
-        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,18,16)];
+        [cell.tweetId setFrame:CGRectMake(4, 4, 20, 16)];
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,20,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
     }
     
     CGRect tvFrame = [cell.textView frame];
-    float lineHeight = cell.textView.font.lineHeight;
+    float lineHeight = cell.textView.font.lineHeight + 3;
     tvFrame.size.height = ([(NSNumber *)[self.tweetNumberOfLines objectAtIndex:indexPath.row] intValue] * lineHeight) + 8;
     [cell.textView setFrame:tvFrame];
     
@@ -273,7 +309,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *numLines = [tweetNumberOfLines objectAtIndex:indexPath.row];
-    float lineHeight = [UIFont fontWithName:@"CrimsonText-Roman" size:19.0f].lineHeight;
+    float lineHeight = [UIFont fontWithName:@"Lato-Regular" size:16.0f].lineHeight + 3;
     return (lineHeight * numLines.intValue) + 20 + 8;
 }
 
@@ -384,7 +420,7 @@
             currentlyEditing = nil;
         }
         
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
 }

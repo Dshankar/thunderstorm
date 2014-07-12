@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WriterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
+@interface WriterTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *tweetData;
 @property (nonatomic, retain) NSMutableArray *tweetNumberOfLines;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
