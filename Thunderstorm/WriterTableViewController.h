@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WriterTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
+@interface WriterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, retain) NSMutableArray *tweetData;
 @property (nonatomic, retain) NSMutableArray *tweetNumberOfLines;
-@property (nonatomic, strong) UITableView *tableView;
+//@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, retain) NSMutableDictionary *timelineData;
 
 @end

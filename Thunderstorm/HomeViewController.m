@@ -157,7 +157,7 @@
 //    [navigation.navigationBar setTranslucent:NO];
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     
-    WriterTableViewController *writer = [[WriterTableViewController alloc] init];
+    WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStylePlain];
     [self presentViewController:writer animated:YES completion:nil];
 }
 

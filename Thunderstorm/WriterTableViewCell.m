@@ -27,7 +27,7 @@
                 
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(4,4,20,20)];
+        tweetId = [[UILabel alloc] initWithFrame:CGRectMake(5,2,20,20)];
         [tweetId setFont:[UIFont fontWithName:@"Lato-Regular" size:16.0f]];
         [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
