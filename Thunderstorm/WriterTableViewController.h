@@ -15,5 +15,7 @@
 //@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, retain) NSMutableDictionary *timelineData;
 @property (nonatomic, retain) NSMutableDictionary *timelineNumberOfLines;
+@property (nonatomic, retain) UIBarButtonItem* publishButton;
+@property (nonatomic, retain) UIBarButtonItem* disabledPublishButton;
 
 @end

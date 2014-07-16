@@ -122,7 +122,7 @@
             break;
     };
 
-    [self createTimeline:timelineTitle];
+    [self createTimeline:timelineTitle Description:timelineDescription];
 }
 
 -(void)displayTimelineError
@@ -131,12 +131,13 @@
     // display descriptive error message here
 }
 
--(void)createTimeline:(NSString *)title
+-(void)createTimeline:(NSString *)title Description:(NSString *)description
 {
     Settings *settings = [Settings getInstance];
     NSURL *createTimelineURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/beta/timelines/custom/create.json"];
     NSDictionary *createTimelineParams = @{
                                            @"name":title,
+                                           @"description":description,
                                            @"include_entities":@"1",
                                            @"include_user_entities":@"1",
                                            @"include_cards":@"1",
@@ -289,8 +290,16 @@
 {
     [_progressView setProgress:1.0 animated:YES];
     [_progressView setProgressTintColor:[UIColor successGreen]];
-    [cancelButton.titleLabel setText:@"Done"];
+    [cancelButton.titleLabel setText:@"Open in Twitter"];
     [cancelButton setBackgroundColor:[UIColor successGreen]];
+    [cancelButton removeTarget:self action:@selector(cancelPublishAndDismissView:) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton addTarget:self action:@selector(openTimelineInTwitter:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)openTimelineInTwitter:(id)sender
+{
+    [self invalidateTaskAndBackground];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
 }
 
 - (void)cancelPublishAndDismissView:(id)sender

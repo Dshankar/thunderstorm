@@ -11,7 +11,6 @@
 #import "UIColor+ThunderColors.h"
 #import "PublishViewController.h"
 #import "SettingsTableViewController.h"
-#import "CreateTimelineViewController.h"
 #import "WriterHeaderView.h"
 
 @interface WriterTableViewController ()
@@ -19,7 +18,6 @@
 
 @implementation WriterTableViewController
 {
-    UIBarButtonItem* _publishButton;
     NSString* _DEFAULT_TWEET_PROMPT;
     UIResponder* currentlyEditing;
 }
@@ -27,19 +25,23 @@
 @synthesize tweetNumberOfLines;
 @synthesize timelineData;
 @synthesize timelineNumberOfLines;
+@synthesize publishButton;
+@synthesize disabledPublishButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        _DEFAULT_TWEET_PROMPT = @"Call me Ishmael.";
+        _DEFAULT_TWEET_PROMPT = @"";
         
-        _publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
+        self.publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"settings-grey.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
+        self.disabledPublishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish-disabled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(disabledPublishTweets:)];
+        
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"settings-blue"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(displaySettings:)];
         [self.navigationItem setLeftBarButtonItem:settingsButton];
-        [self.navigationItem setRightBarButtonItem:_publishButton];
+        [self.navigationItem setRightBarButtonItem:self.disabledPublishButton];
         
         [self.view setBackgroundColor:[UIColor whiteColor]];
     }
@@ -173,10 +175,31 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) disabledPublishTweets:(id)sender
+{
+    // do something
+}
+
 - (void) publishTweets:(id)sender
 {
-    CreateTimelineViewController *create = [[CreateTimelineViewController alloc] initWithStyle:UITableViewStyleGrouped Tweets:tweetData];
-    [self.navigationController pushViewController:create animated:YES];
+    PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
+    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
+    self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    //    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:publish animated:NO completion:nil];
+    //    [self.navigationController pushViewController:publish animated:YES];
+    
+    publish.view.alpha = 0;
+    [UIView animateWithDuration:0.5 animations:^{
+        publish.view.alpha = 1;
+    }];
+    
+    self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    NSString *timelineTitle = [self.timelineData objectForKey:@"title"];
+    NSString *timelineDescription = [self.timelineData objectForKey:@"description"];
+    
+    [publish beginPublishingTweets:self.tweetData onTimeline:timelineTitle Description:timelineDescription];
 }
 
 - (void) displaySettings:(id)sender
@@ -367,7 +390,7 @@
     
     CGRect titleFrame = CGRectMake(20, 10, 280, titleHeight);
     CGRect titlePFrame = CGRectMake(25, 21, 280, 25);
-    CGRect descFrame = CGRectMake(20, titleHeight + 4, 280, descHeight);
+    CGRect descFrame = CGRectMake(20, titleHeight + 1, 280, descHeight);
     CGRect descPFrame = CGRectMake(25, titleHeight + 8, 280, 25);
     CGRect usernameFrame = CGRectMake(48, titleHeight + descHeight + 26, 150, 20);
     CGRect settingsFrame = CGRectMake(25, titleHeight + descHeight + 30, 16, 16);
@@ -574,17 +597,14 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 
-- (void) textViewDidBeginEditing:(UITextView *) tv {
-    if([tv.text isEqualToString:_DEFAULT_TWEET_PROMPT]){
-        [tv setText:@""];
-    }
-    
+- (void) textViewDidBeginEditing:(UITextView *) tv
+{
     currentlyEditing = tv;
 }
 
 - (void)textViewDidChange:(UITextView *)tv
 {
-    // descriptionTextView & titleTextView is separately handled, in a separate UITableViewCell
+    // descriptionTextView & titleTextView are separately handled
     if(tv.tag == -1 || tv.tag == -2){
         WriterHeaderView *headerView = (WriterHeaderView *)[self.tableView headerViewForSection:0];
         
@@ -611,6 +631,14 @@
             [self.timelineData setObject:tv.text forKey:key];
         }
         
+        NSString *currentTitle = [self.timelineData objectForKey:@"title"];
+        NSString *currentDescription = [self.timelineData objectForKey:@"description"];
+        if([currentTitle isEqualToString:@""] || [currentDescription isEqualToString:@""]){
+            [self.navigationItem setRightBarButtonItem:self.disabledPublishButton];
+        } else {
+            [self.navigationItem setRightBarButtonItem:self.publishButton];
+        }
+        
         NSNumber *prevNumberOfLines = [timelineNumberOfLines objectForKey:key];
         if(calcNumberOfLines != prevNumberOfLines.intValue){
             [timelineNumberOfLines setObject:[NSNumber numberWithInt:calcNumberOfLines] forKey:key];
@@ -627,6 +655,14 @@
         }
         
     } else {
+        WriterTableViewCell *cell = (WriterTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tv.tag inSection:0]];
+
+        if([tv.text isEqualToString:_DEFAULT_TWEET_PROMPT]){
+            cell.placeholder.hidden = NO;
+        } else {
+            cell.placeholder.hidden = YES;
+        }
+        
         [tweetData setObject:tv.text atIndexedSubscript:tv.tag];
         
         int calcNumberOfLines = (tv.contentSize.height / tv.font.lineHeight);

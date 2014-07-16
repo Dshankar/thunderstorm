@@ -33,6 +33,12 @@
         [tweetId setTextColor:[UIColor mutedGray]];
         [self.textView addSubview:tweetId];
         [self.textView setKeyboardType:UIKeyboardTypeTwitter];
+        
+        self.placeholder = [[UILabel alloc] initWithFrame:CGRectMake(45, 10, 160, 20)];
+        [self.placeholder setText:@"Call me Ishmael."];
+        [self.placeholder setTextColor:[UIColor mutedGray]];
+        [self.placeholder setFont:[UIFont fontWithName:@"Lato-Regular" size:16.0f]];
+        [self addSubview:self.placeholder];
     }
     return self;
 }
