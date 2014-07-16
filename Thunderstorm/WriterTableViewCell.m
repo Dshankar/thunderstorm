@@ -16,6 +16,7 @@
 }
 
 @synthesize textView;
+@synthesize placeholder;
 @synthesize tweetId;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

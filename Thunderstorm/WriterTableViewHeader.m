@@ -1,32 +1,26 @@
 //
-//  WriterDescriptionTableViewCell.m
+//  WriterTableViewHeader.m
 //  Thunderstorm
 //
-//  Created by Darshan Shankar on 7/12/14.
+//  Created by Darshan Shankar on 7/14/14.
 //  Copyright (c) 2014 Darshan Shankar. All rights reserved.
 //
 
-#import "WriterDescriptionTableViewCell.h"
+#import "WriterTableViewHeader.h"
 #import "UIColor+ThunderColors.h"
 
-@implementation WriterDescriptionTableViewCell
+@implementation WriterTableViewHeader
 
-@synthesize publishButton;
-@synthesize username;
 @synthesize titleTextView;
+@synthesize titlePlaceholder;
 @synthesize descriptionTextView;
 @synthesize descriptionPlaceholder;
-@synthesize titlePlaceholder;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-//        self.publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.publishButton setFrame:CGRectMake(236.0, 20.0, 64.0, 30.0)];
-//        [self.publishButton setBackgroundImage:[UIImage imageNamed:@"publish.png"] forState:UIControlStateNormal];
-//        [self addSubview:publishButton];
         
         self.titleTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 20.0, 280.0, 30.0)];
         [self.titleTextView setFont:[UIFont fontWithName:@"Lato-Bold" size:22.0f]];
@@ -38,12 +32,7 @@
         [self.titlePlaceholder setTextColor:[UIColor mutedGray]];
         [self.titlePlaceholder setText:@"Moby Dick"];
         [self addSubview:titlePlaceholder];
-        
-//        self.username = [[UILabel alloc] initWithFrame:CGRectMake(25.0, 50.0, 200.0, 20.0)];
-//        [self.username setFont:[UIFont fontWithName:@"Lato-Light" size:16.0f]];
-//        [self.username setTextColor:[UIColor mutedGray]];
-//        [self addSubview:username];
-        
+                
         self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 80.0, 280.0, 90.0)];
         [self.descriptionTextView setFont:[UIFont fontWithName:@"Lato-Bold" size:19.0f]];
         self.descriptionTextView.tag = -1;
@@ -54,22 +43,17 @@
         [self.descriptionPlaceholder setTextColor:[UIColor mutedGray]];
         [self.descriptionPlaceholder setText:@"A story about whales."];
         [self addSubview:descriptionPlaceholder];
-        
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     return self;
 }
 
-- (void)awakeFromNib
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
 {
-    // Initialization code
+    // Drawing code
 }
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
+*/
 
 @end

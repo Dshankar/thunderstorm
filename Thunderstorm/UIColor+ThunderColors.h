@@ -11,6 +11,7 @@
 @interface UIColor (ThunderColors)
 
 + (UIColor *)defaultGray;
++ (UIColor *)ultraLightGray;
 + (UIColor *)mutedGray;
 + (UIColor *)errorRed;
 + (UIColor *)linkBlue;

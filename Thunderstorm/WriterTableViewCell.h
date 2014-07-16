@@ -12,5 +12,6 @@
 
 @property (nonatomic, retain) UITextView* textView;
 @property (nonatomic, retain) UILabel* tweetId;
+@property (nonatomic, retain) UILabel* placeholder;
 
 @end

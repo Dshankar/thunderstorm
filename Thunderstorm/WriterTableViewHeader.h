@@ -1,14 +1,14 @@
 //
-//  WriterDescriptionTableViewCell.h
+//  WriterTableViewHeader.h
 //  Thunderstorm
 //
-//  Created by Darshan Shankar on 7/12/14.
+//  Created by Darshan Shankar on 7/14/14.
 //  Copyright (c) 2014 Darshan Shankar. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface WriterDescriptionTableViewCell : UITableViewCell
+@interface WriterTableViewHeader : UIView
 
 @property (nonatomic, retain) UIButton* publishButton;
 @property (nonatomic, retain) UITextView* titleTextView;
