@@ -15,6 +15,7 @@
 @interface PublishViewController ()
 
 @property (nonatomic, strong) NSString *timelineId;
+@property (nonatomic, strong) NSString *timelineTitle;
 @property (nonatomic, strong) NSArray *tweets;
 @property (nonatomic) NSString *replyID;
 @property (nonatomic) int currentIndex;
@@ -23,6 +24,10 @@
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) DPMeterView *progressView;
+@property (nonatomic, strong) UILabel *statusLabel;
+@property (nonatomic, strong) UILabel *timelineTitleLabel;
+@property (nonatomic, strong) UILabel *tipLabel;
+@property (nonatomic, strong) UILabel *tipMessageLabel;
 
 @end
 
@@ -47,21 +52,70 @@
         [cancelButton setTitleColor:[UIColor colorWithWhite:1.0 alpha:1.0] forState:UIControlStateNormal];
         [cancelButton setBackgroundColor:[UIColor mutedGray]];
         [self.view addSubview:cancelButton];
-
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         
-//        [self.view setBackgroundColor:[UIColor colorWithRed:(220.0/255) green:(220.0/255) blue:(220.0/255) alpha:1.0]];
-//        [self.view setBackgroundColor:[UIColor whiteColor]];
+        float statusLabelY;
+        float timelineTitleLabelY;
+        float progressViewY;
+        float tipLabelY;
+        float tipMessageLabelY;
         
-        _progressView = [[DPMeterView alloc] initWithFrame:CGRectMake(90,(deviceHeight - 114)/2,140,114)];
+        if(deviceHeight == 568){
+            statusLabelY = 100.0;
+            progressViewY = 227.0;
+        } else {
+            statusLabelY = 50.0;
+            progressViewY = 150.0;
+        }
+        timelineTitleLabelY = statusLabelY + 20;
+        tipLabelY = progressViewY + 150;
+        tipMessageLabelY = tipLabelY + 0;
+        
+        _progressView = [[DPMeterView alloc] initWithFrame:CGRectMake(90,progressViewY,140,114)];
         [_progressView setMeterType:DPMeterTypeLinearVertical];
         [_progressView setProgressTintColor:[UIColor linkBlue]];
-        [_progressView setTrackTintColor:[UIColor whiteColor]];
+        [_progressView setTrackTintColor:[UIColor colorWithWhite:0.96 alpha:1.0]];
         
+        [_progressView setProgress:0.3];
+        
+        _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, statusLabelY, 320, 22)];
+        [_statusLabel setText:@"Publishing"];
+        [_statusLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:21.0f]];
+        [_statusLabel setTextColor:[UIColor mutedGray]];
+        [_statusLabel setTextAlignment:NSTextAlignmentCenter];
+        [self.view addSubview:_statusLabel];
+        
+        _timelineTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, timelineTitleLabelY, 320, 30)];
+        [_timelineTitleLabel setTextAlignment:NSTextAlignmentCenter];
+        [_timelineTitleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:22.0f]];
+        [self.view addSubview:_timelineTitleLabel];
+        
+        _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, tipLabelY, 260, 20)];
+        [_tipLabel setText:@"TIP"];
+        [_tipLabel setTextAlignment:NSTextAlignmentCenter];
+        [_tipLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:15.0f]];
+        [_tipLabel setTextColor:[UIColor mutedGray]];
+//        [self.view addSubview:_tipLabel];
+        
+        _tipMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, tipMessageLabelY, 260, 70)];
+        [_tipMessageLabel setNumberOfLines:3];
+        [_tipMessageLabel setFont:[UIFont fontWithName:@"Lato-Regular" size:15.0f]];
+        [_tipMessageLabel setTextColor:[UIColor defaultGray]];
+        [self.view addSubview:_tipMessageLabel];
         
         [self.view addSubview:_progressView];
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSString *tip1 = @"Tip: By default, Thunderstorm waits 2 seconds between each tweet to avoid spamming your followers.";
+    NSString *tip2 = @"Tip: Reorder tweets before you publish with the long-press gesture on a tweet.";
+    NSString *tip3 = @"Tip: Switch to another app while you wait. Thunderstorm will continue to publish in the background ";
+    NSArray *tips = @[tip1, tip2, tip3];
+    
+    int index = arc4random() % 3;
+    [_tipMessageLabel setText:[tips objectAtIndex:index]];
 }
 
 - (void)viewDidLoad
@@ -99,7 +153,7 @@
     }
 }
 
--(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)timelineTitle Description:(NSString *)timelineDescription
+-(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)newTimelineTitle Description:(NSString *)newTimelineDescription
 {
     self.tweets = tweetData;
     self.currentIndex = 0;
@@ -122,7 +176,9 @@
             break;
     };
 
-    [self createTimeline:timelineTitle Description:timelineDescription];
+    self.timelineTitle = newTimelineTitle;
+    [self.timelineTitleLabel setText:newTimelineTitle];
+    [self createTimeline:newTimelineTitle Description:newTimelineDescription];
 }
 
 -(void)displayTimelineError
@@ -282,7 +338,7 @@
 {
     [_progressView setProgressTintColor:[UIColor errorRed]];
     [_progressView setProgress:1.0 animated:YES];
-    [cancelButton.titleLabel setText:@"Error"];
+    [cancelButton setTitle:@"Error" forState:UIControlStateNormal];
     [cancelButton setBackgroundColor:[UIColor errorRed]];
 }
 
@@ -290,16 +346,29 @@
 {
     [_progressView setProgress:1.0 animated:YES];
     [_progressView setProgressTintColor:[UIColor successGreen]];
-    [cancelButton.titleLabel setText:@"Open in Twitter"];
+    [cancelButton setTitle:@"Share to Twitter" forState:UIControlStateNormal];
     [cancelButton setBackgroundColor:[UIColor successGreen]];
     [cancelButton removeTarget:self action:@selector(cancelPublishAndDismissView:) forControlEvents:UIControlEventTouchUpInside];
-    [cancelButton addTarget:self action:@selector(openTimelineInTwitter:) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton addTarget:self action:@selector(shareToTwitter:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_statusLabel setTextColor:[UIColor successGreen]];
+    [_statusLabel setText:@"Published"];
 }
 
-- (void)openTimelineInTwitter:(id)sender
+- (void)shareToTwitter:(id)sender
 {
     [self invalidateTaskAndBackground];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
+    Settings *settings = [Settings getInstance];
+    
+    SLComposeViewController *compose = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+
+    NSString *urlString = [NSString stringWithFormat:@"www.twitter.com/%@/timelines/%@", settings.account.username, [self.timelineId substringFromIndex:7]];
+    NSString *tweet = [NSString stringWithFormat:@"\"%@\" tweetstorm via @thunderstormapp", self.timelineTitle];
+    [compose setInitialText:tweet];
+    [compose addURL:[NSURL URLWithString:urlString]];
+    [self presentViewController:compose animated:YES completion:^{
+        [cancelButton setTitle:@"View in Twitter" forState:UIControlStateNormal];
+    }];
 }
 
 - (void)cancelPublishAndDismissView:(id)sender

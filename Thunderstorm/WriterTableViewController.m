@@ -12,6 +12,7 @@
 #import "PublishViewController.h"
 #import "SettingsTableViewController.h"
 #import "WriterHeaderView.h"
+#import "TwitterText.h"
 
 @interface WriterTableViewController ()
 @end
@@ -177,29 +178,59 @@
 
 - (void) disabledPublishTweets:(id)sender
 {
-    // do something
+    UIAlertView *disabledPublishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:@"Enter a title and description first!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [disabledPublishError show];
 }
 
 - (void) publishTweets:(id)sender
 {
-    PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
-    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
-    self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    //    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:publish animated:NO completion:nil];
-    //    [self.navigationController pushViewController:publish animated:YES];
-    
-    publish.view.alpha = 0;
-    [UIView animateWithDuration:0.5 animations:^{
-        publish.view.alpha = 1;
-    }];
-    
-    self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
-    
     NSString *timelineTitle = [self.timelineData objectForKey:@"title"];
     NSString *timelineDescription = [self.timelineData objectForKey:@"description"];
     
-    [publish beginPublishingTweets:self.tweetData onTimeline:timelineTitle Description:timelineDescription];
+    NSString *lengthErrorMessage;
+    NSString *emptyTweetErrorMessage;
+    for(int i = 0; i < [tweetData count]; i++){
+        int length = [TwitterText tweetLength:[tweetData objectAtIndex:i]];
+        if (length == 0){
+            emptyTweetErrorMessage = [NSString stringWithFormat:@"Tweet %i/ is empty! Delete empty tweets by swiping left.", i+1];
+            break;
+        } else if(length > 137){
+            lengthErrorMessage = [NSString stringWithFormat:@"Tweet %i/ is too long! Tweets cannot be more than 140 characters  long.", i+1];
+            break;
+        }
+    }
+    
+    UIAlertView *publishError;
+    if(timelineTitle.length > 25){
+        publishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:@"Titles cannot be more than 25 characters long." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [publishError show];
+    } else if(timelineDescription.length > 160){
+        publishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:@"Descriptions cannot be more than 160 characters long." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [publishError show];
+    } else if(lengthErrorMessage){
+        publishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:lengthErrorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [publishError show];
+    } else if(emptyTweetErrorMessage){
+        publishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:emptyTweetErrorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [publishError show];
+    } else {
+        PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
+    //    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
+        publish.view.backgroundColor = [UIColor whiteColor];
+        self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        //    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:publish animated:NO completion:nil];
+        //    [self.navigationController pushViewController:publish animated:YES];
+        
+        publish.view.alpha = 0;
+        [UIView animateWithDuration:0.5 animations:^{
+            publish.view.alpha = 1;
+        }];
+
+        self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+        
+        [publish beginPublishingTweets:self.tweetData onTimeline:timelineTitle Description:timelineDescription];
+    }
 }
 
 - (void) displaySettings:(id)sender
@@ -404,7 +435,7 @@
 //    [headerView.settingsButton setFrame:settingsFrame];
 //    [headerView.publishButton setFrame:publishFrame];
     
-    NSLog(@"Title %@\n TitleP %@\n Desc %@\n DescP %@\n username %@\n settings %@\n publish %@", NSStringFromCGRect(titleFrame), NSStringFromCGRect(titlePFrame), NSStringFromCGRect(descFrame), NSStringFromCGRect(descPFrame), NSStringFromCGRect(usernameFrame), NSStringFromCGRect(settingsFrame), NSStringFromCGRect(publishFrame));
+//    NSLog(@"Title %@\n TitleP %@\n Desc %@\n DescP %@\n username %@\n settings %@\n publish %@", NSStringFromCGRect(titleFrame), NSStringFromCGRect(titlePFrame), NSStringFromCGRect(descFrame), NSStringFromCGRect(descPFrame), NSStringFromCGRect(usernameFrame), NSStringFromCGRect(settingsFrame), NSStringFromCGRect(publishFrame));
     
     return headerView;
 }

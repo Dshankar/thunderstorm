@@ -29,16 +29,6 @@
     return [_backingStore string];
 }
 
-//- (NSUInteger)length
-//{
-//    NSInteger twLength = [TwitterText tweetLength:self.string];
-//    NSInteger bsLength = [_backingStore length];
-//    
-//    NSLog(@"Twitter length: %d Real length: %d", twLength, bsLength);
-//    
-//    return bsLength;
-//}
-
 - (NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
 {
     return [_backingStore attributesAtIndex:location effectiveRange:range];

@@ -13,6 +13,7 @@
 		F90384D81973D826008F0538 /* WriterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F90384D71973D826008F0538 /* WriterHeaderView.m */; };
 		F90384E219760758008F0538 /* settings-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384E119760758008F0538 /* settings-blue@2x.png */; };
 		F90384E419760822008F0538 /* publish-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384E319760822008F0538 /* publish-disabled@2x.png */; };
+		F90384E619776A3B008F0538 /* twitter-muted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90384E519776A3B008F0538 /* twitter-muted@2x.png */; };
 		F90EF23D1963EA03007211CC /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF23C1963EA03007211CC /* keyboard@2x.png */; };
 		F90EF2401964C0F9007211CC /* PublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F90EF23F1964C0F9007211CC /* PublishViewController.m */; };
 		F90EF2461964E40E007211CC /* publish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F90EF2451964E40E007211CC /* publish@2x.png */; };
@@ -68,6 +69,7 @@
 		F90384D71973D826008F0538 /* WriterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriterHeaderView.m; sourceTree = "<group>"; };
 		F90384E119760758008F0538 /* settings-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-blue@2x.png"; sourceTree = "<group>"; };
 		F90384E319760822008F0538 /* publish-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "publish-disabled@2x.png"; sourceTree = "<group>"; };
+		F90384E519776A3B008F0538 /* twitter-muted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-muted@2x.png"; sourceTree = "<group>"; };
 		F90EF23C1963EA03007211CC /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
 		F90EF23E1964C0F9007211CC /* PublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishViewController.h; sourceTree = "<group>"; };
 		F90EF23F1964C0F9007211CC /* PublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishViewController.m; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				F90384E319760822008F0538 /* publish-disabled@2x.png */,
 				F90384E119760758008F0538 /* settings-blue@2x.png */,
 				F90EF23C1963EA03007211CC /* keyboard@2x.png */,
+				F90384E519776A3B008F0538 /* twitter-muted@2x.png */,
 				F9BA03D6195C2AF10064F12E /* Lato-Regular.ttf */,
 				F9BA03D2195C1FF00064F12E /* Lato-Bold.ttf */,
 				F90384BF196BE814008F0538 /* new@2x.png */,
@@ -347,6 +350,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F90384E619776A3B008F0538 /* twitter-muted@2x.png in Resources */,
 				F9ABA9A51955AC220019C064 /* InfoPlist.strings in Resources */,
 				F9BA03D4195C1FF00064F12E /* Lato-Bold.ttf in Resources */,
 				F90EF24A19654336007211CC /* close@2x.png in Resources */,

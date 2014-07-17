@@ -195,7 +195,12 @@
             break;
         } case 1: {
             if(indexPath.row == 0){
+                if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]]){
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.twitter.com/dshankar"]];
+                }
+                
             } else {
                 WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
                 [website loadURLwithString:@"http://github.com/Dshankar/thunderstorm"];
