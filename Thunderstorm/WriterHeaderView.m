@@ -8,16 +8,18 @@
 
 #import "WriterHeaderView.h"
 #import "UIColor+ThunderColors.h"
+#import "SyntaxHighlightTextStorage.h"
 
 @implementation WriterHeaderView
+{
+    SyntaxHighlightTextStorage *_titleTextStorage;
+    SyntaxHighlightTextStorage *_descriptionTextStorage;
+}
 
 @synthesize titleTextView;
 @synthesize titlePlaceholder;
 @synthesize descriptionTextView;
 @synthesize descriptionPlaceholder;
-@synthesize username;
-@synthesize publishButton;
-@synthesize settingsButton;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -25,11 +27,15 @@
     if (self) {
         // Initialization code
         
-        self.titleTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 20.0, 280.0, 80.0)];
-        [self.titleTextView setFont:[UIFont fontWithName:@"Lato-Bold" size:25.0f]];
+        NSDictionary *attrs = @{NSFontAttributeName: [UIFont fontWithName:@"Lato-Bold" size:25.0f]};
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Title" attributes:attrs];
+        _titleTextStorage = [SyntaxHighlightTextStorage new];
+        _titleTextStorage.maxLength = [NSNumber numberWithInt:25];
+        _titleTextStorage.defaultColor = [UIColor blackColor];
+        [_titleTextStorage appendAttributedString:attrString];
+        
+        self.titleTextView = [self textViewWithType:@"title" Frame:CGRectMake(20.0, 20.0, 280.0, 80.0)];
         self.titleTextView.tag = -2;
-//        self.titleTextView.returnKeyType = UIReturnKeyNext;
-        [self.titleTextView setKeyboardType:UIKeyboardTypeTwitter];
         [self.contentView addSubview:titleTextView];
         
         self.titlePlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(25.0, 31.0, 280.0, 25.0)];
@@ -38,11 +44,15 @@
         [self.titlePlaceholder setText:@"Moby Dick"];
         [self.contentView addSubview:titlePlaceholder];
         
-        self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 90.0, 280.0, 110.0)];
-        [self.descriptionTextView setFont:[UIFont fontWithName:@"Lato-Regular" size:19.0f]];
+        NSDictionary *descriptionAttrs = @{NSFontAttributeName: [UIFont fontWithName:@"Lato-Regular" size:19.0f]};
+        NSAttributedString *descriptionAttrString = [[NSAttributedString alloc] initWithString:@"Description" attributes:descriptionAttrs];
+        _descriptionTextStorage = [SyntaxHighlightTextStorage new];
+        _descriptionTextStorage.maxLength = [NSNumber numberWithInt:160];
+        _descriptionTextStorage.defaultColor = [UIColor blackColor];
+        [_descriptionTextStorage appendAttributedString:descriptionAttrString];
+        
+        self.descriptionTextView = [self textViewWithType:@"description" Frame:CGRectMake(20.0, 90.0, 280.0, 110.0)];
         self.descriptionTextView.tag = -1;
-//        self.descriptionTextView.returnKeyType = UIReturnKeyNext;
-        [self.descriptionTextView setKeyboardType:UIKeyboardTypeTwitter];
         [self.contentView addSubview:descriptionTextView];
         
         self.descriptionPlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(25.0, 97.0, 280.0, 25.0)];
@@ -51,36 +61,30 @@
         [self.descriptionPlaceholder setText:@"A story about whales"];
         [self.contentView addSubview:descriptionPlaceholder];
         
-        self.publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.publishButton setFrame:CGRectMake(236.0, 195.0, 64.0, 30.0)];
-        [self.publishButton setBackgroundImage:[UIImage imageNamed:@"publish.png"] forState:UIControlStateNormal];
-//        [self.contentView addSubview:self.publishButton];
-        
-        self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.settingsButton setFrame:CGRectMake(25.0, 202.0, 16.0, 16.0)];
-        [self.settingsButton setBackgroundImage:[UIImage imageNamed:@"settings-grey.png"] forState:UIControlStateNormal];
-//        [self.contentView addSubview:self.settingsButton];
-        
-        self.username = [[UILabel alloc] initWithFrame:CGRectMake(48.0, 199.0, 150.0, 20.0)];
-        [self.username setFont:[UIFont fontWithName:@"Lato-Light" size:15.0f]];
-        [self.username setTextColor:[UIColor defaultGray]];
-        [self.username setText:@"@dshankar"];
-//        [self.contentView addSubview:username];
-        
-        UIView *seperator = [[UIView alloc] initWithFrame:CGRectMake(0, 235.0, self.contentView.bounds.size.width, 1.0)];
-        seperator.backgroundColor = [UIColor ultraLightGray];
-//        [self.contentView addSubview:seperator];
-        
         [self.contentView setBackgroundColor:[UIColor whiteColor]];
-        
-//        [self.titleTextView setBackgroundColor:[UIColor greenColor]];
-//        [self.titlePlaceholder setBackgroundColor:[UIColor blueColor]];
-//        
-//        [self.descriptionTextView setBackgroundColor:[UIColor redColor]];
-//        [self.descriptionPlaceholder setBackgroundColor:[UIColor orangeColor]];
-    
     }
     return self;
+}
+
+- (UITextView *)textViewWithType:(NSString *)type Frame:(CGRect)frame
+{
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    CGSize containerSize = CGSizeMake(300, 300);
+    NSTextContainer *container = [[NSTextContainer alloc] initWithSize:containerSize];
+    container.widthTracksTextView = YES;
+    [layoutManager addTextContainer:container];
+    if([type isEqualToString:@"title"]){
+        [_titleTextStorage addLayoutManager:layoutManager];
+    } else if ([type isEqualToString:@"description"]){
+        [_descriptionTextStorage addLayoutManager:layoutManager];
+    }
+    
+    UITextView *view = [[UITextView alloc] initWithFrame:frame textContainer:container];
+    [view setTextContainerInset:UIEdgeInsetsZero];
+    [view setContentInset:UIEdgeInsetsZero];
+    [view setKeyboardType:UIKeyboardTypeTwitter];
+    
+    return view;
 }
 
 /*

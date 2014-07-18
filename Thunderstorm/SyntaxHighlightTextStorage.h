@@ -10,4 +10,7 @@
 
 @interface SyntaxHighlightTextStorage : NSTextStorage
 
+@property (nonatomic, retain) NSNumber *maxLength;
+@property (nonatomic, retain) UIColor *defaultColor;
+
 @end

@@ -10,12 +10,9 @@
 
 @interface WriterHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, retain) UIButton* publishButton;
-@property (nonatomic, retain) UIButton* settingsButton;
 @property (nonatomic, retain) UITextView* titleTextView;
 @property (nonatomic, retain) UILabel* titlePlaceholder;
 @property (nonatomic, retain) UITextView* descriptionTextView;
 @property (nonatomic, retain) UILabel* descriptionPlaceholder;
-@property (nonatomic, retain) UILabel* username;
 
 @end

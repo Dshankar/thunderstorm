@@ -420,20 +420,14 @@
     float descHeight = (descNumLines * descFontLineHeight) + 20;
     
     CGRect titleFrame = CGRectMake(20, 10, 280, titleHeight);
-    CGRect titlePFrame = CGRectMake(25, 21, 280, 25);
+    CGRect titlePFrame = CGRectMake(25, 14, 280, 25);
     CGRect descFrame = CGRectMake(20, titleHeight + 1, 280, descHeight);
-    CGRect descPFrame = CGRectMake(25, titleHeight + 8, 280, 25);
-    CGRect usernameFrame = CGRectMake(48, titleHeight + descHeight + 26, 150, 20);
-    CGRect settingsFrame = CGRectMake(25, titleHeight + descHeight + 30, 16, 16);
-    CGRect publishFrame = CGRectMake(236, titleHeight + descHeight + 22, 64, 30);
+    CGRect descPFrame = CGRectMake(25, titleHeight + 0, 280, 25);
     
     [headerView.titleTextView setFrame:titleFrame];
     [headerView.titlePlaceholder setFrame:titlePFrame];
     [headerView.descriptionTextView setFrame:descFrame];
     [headerView.descriptionPlaceholder setFrame:descPFrame];
-//    [headerView.username setFrame:usernameFrame];
-//    [headerView.settingsButton setFrame:settingsFrame];
-//    [headerView.publishButton setFrame:publishFrame];
     
 //    NSLog(@"Title %@\n TitleP %@\n Desc %@\n DescP %@\n username %@\n settings %@\n publish %@", NSStringFromCGRect(titleFrame), NSStringFromCGRect(titlePFrame), NSStringFromCGRect(descFrame), NSStringFromCGRect(descPFrame), NSStringFromCGRect(usernameFrame), NSStringFromCGRect(settingsFrame), NSStringFromCGRect(publishFrame));
     

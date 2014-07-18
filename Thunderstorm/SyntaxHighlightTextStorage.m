@@ -16,6 +16,9 @@
     NSMutableAttributedString *_backingStore;
 }
 
+@synthesize maxLength;
+@synthesize defaultColor;
+
 - (id) init
 {
     if(self = [super init]){
@@ -67,7 +70,12 @@
 
 - (void)applyStylesToRange:(NSRange)searchRange
 {
-    NSDictionary *defaultGrayAttributes = @{NSForegroundColorAttributeName :[UIColor defaultGray]};
+    NSDictionary *defaultGrayAttributes;
+    if(defaultColor){
+        defaultGrayAttributes = @{NSForegroundColorAttributeName :defaultColor};
+    } else {
+        defaultGrayAttributes = @{NSForegroundColorAttributeName :[UIColor defaultGray]};
+    }
     NSDictionary *linkBlueAttributes = @{NSForegroundColorAttributeName :[UIColor linkBlue]};
     
     [self addAttributes:defaultGrayAttributes range:searchRange];
@@ -85,13 +93,20 @@
     // assumes up to 2 digits, max of "99/"
     // for now, this will break if > 99 tweets
     // for now, 1 digit tweets "3/" will have max 139 characters
-    const int MAX_TWEET_LENGTH = 137;
+//    const int MAX_TWEET_LENGTH = 137;
+    int maxTweetLength;
+    if(maxLength){
+        maxTweetLength = maxLength.intValue;
+    } else {
+        maxTweetLength = 137;
+    }
+    
     NSDictionary *errorRedAttributes = @{NSForegroundColorAttributeName :[UIColor errorRed ]};
     
     NSInteger twLength = [TwitterText tweetLength:self.string];
     
-    if(twLength > MAX_TWEET_LENGTH){
-        NSInteger excessCharacters = twLength - MAX_TWEET_LENGTH;
+    if(twLength > maxTweetLength){
+        NSInteger excessCharacters = twLength - maxTweetLength;
         [self addAttributes:errorRedAttributes range:NSMakeRange(self.length - excessCharacters, excessCharacters)];
     }
 }
