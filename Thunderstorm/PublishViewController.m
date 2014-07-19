@@ -360,7 +360,7 @@
     
     NSURL *postTweetURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
     NSDictionary *postParams = @{
-                                 @"status":[NSString stringWithFormat:@"New post \"%@\" %@", self.timelineTitle, urlString],
+                                 @"status":[NSString stringWithFormat:@"New post \"%@\" %@ via @thunderstormapp", self.timelineTitle, urlString],
                                  @"in_reply_to_status_id" : [NSString stringWithString:self.replyId]
                                  };
     SLRequest *req = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:postTweetURL parameters:postParams];
@@ -412,6 +412,12 @@
 
 - (void)showSuccess
 {
+    UIButton *newButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [newButton setFrame:CGRectMake(236.0, 30.0, 64.0, 30.0)];
+    [newButton setBackgroundImage:[UIImage imageNamed:@"new-full.png"] forState:UIControlStateNormal];
+    [newButton addTarget:self action:@selector(startNewWriter:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:newButton];
+    
     [_progressView setProgress:1.0 animated:YES];
     [_progressView setProgressTintColor:[UIColor successGreen]];
     [cancelButton setTitle:@"View on Twitter" forState:UIControlStateNormal];
@@ -434,6 +440,12 @@
         NSString *urlString = [NSString stringWithFormat:@"https://www.twitter.com/%@/status/%@", settings.account.username, self.replyId];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     }
+}
+
+- (void)startNewWriter:(id)sender
+{
+    // start new from scratch!
+    NSLog(@"start a new tweetstorm");
 }
 
 - (void)cancelPublishAndDismissView:(id)sender
