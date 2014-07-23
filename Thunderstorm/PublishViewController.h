@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PublishDataDelegate <NSObject>
+@required
+- (void) startNewWriter;
+@end
+
 @interface PublishViewController : UIViewController
+{
+    id <PublishDataDelegate> delegate;
+}
+@property (retain) id delegate;
 
 -(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)timelineTitle Description:(NSString *)timelineDescription;
 

@@ -7,23 +7,42 @@
 //
 
 #import "AppDelegate.h"
-#import "HomeViewController.h"
+#import "WriterTableViewController.h"
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    HomeViewController *home = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
-    self.window.rootViewController = home;
     
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
- 
-    NSDictionary *defaultDefaults = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1], @"selectedDuration", nil];
+//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    
+    NSDictionary *defaultTimelineData = [[NSDictionary alloc] initWithObjects:@[@"",@""] forKeys:@[@"title", @"description"]];
+    NSDictionary *defaultTimelineNumberOfLines = [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:1], [NSNumber numberWithInt: 1]] forKeys:@[@"title", @"description"]];
+    
+    NSArray *defaultTweetData = [[NSArray alloc] initWithObjects:@"", nil];
+    NSArray *defaultTweetNumberOfLines = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
+    
+    NSDictionary *defaultDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithInt:1], @"selectedDuration", @"", @"selectedAccountIdentifier", defaultTimelineData, @"timelineData", defaultTimelineNumberOfLines, @"timelineNumberOfLines", defaultTweetData, @"tweetData", defaultTweetNumberOfLines, @"tweetNumberOfLines", nil];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultDefaults];
     
+    WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];
+    [navigation.navigationBar setBarTintColor:[UIColor whiteColor]];
+    [navigation.navigationBar setTranslucent:NO];
+    self.window.rootViewController = navigation;
+    
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
@@ -54,4 +73,18 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+/*
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
+    NSLog(@"shouldSaveApplicationState");
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
+    NSLog(@"shouldRestoreApplicationState");
+    return YES;
+}
+*/
+ 
 @end

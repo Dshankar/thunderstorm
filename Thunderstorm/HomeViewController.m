@@ -15,6 +15,7 @@
 
 @interface HomeViewController ()
 @property (nonatomic) ACAccountStore *accountStore;
+
 @end
 
 @implementation HomeViewController
@@ -142,23 +143,10 @@
         ACAccount *chosenOne = [twitterAccounts objectAtIndex:buttonIndex];
         NSLog(@"Selected %@", chosenOne.username);
         Settings *settings = [Settings getInstance];
-        settings.account = chosenOne;
+        [settings selectAccount:chosenOne];
         
-        [self showWriteScreen];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-- (void)showWriteScreen
-{
-    WriterTableViewController *writer = [[WriterTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:writer];
-//    [navigation.navigationBar setBarTintColor:[UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0]];
-    [navigation.navigationBar setBarTintColor:[UIColor whiteColor]];
-    [navigation.navigationBar setTranslucent:NO];
-//    [navigation.navigationBar setBarTintColor:[UIColor linkBlue]];
-//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    
-    [self presentViewController:navigation animated:YES completion:nil];
 }
 
 /*

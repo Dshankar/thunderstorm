@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSMutableArray *publishedTweetIds;
 @property (nonatomic) int currentIndex;
 @property (nonatomic) float duration;
+@property (nonatomic) float progressPercentage;
 @property (nonatomic, strong) NSTimer *taskTimer;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 @property (nonatomic, strong) UIButton *cancelButton;
@@ -29,6 +30,8 @@
 @property (nonatomic, strong) UILabel *timelineTitleLabel;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UILabel *tipMessageLabel;
+@property (nonatomic) BOOL isDonePublishing;
+@property (nonatomic, strong) NSString *failureMessage;
 
 @end
 
@@ -38,12 +41,13 @@
 @synthesize replyId;
 @synthesize currentIndex;
 @synthesize cancelButton;
+@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
         CGFloat deviceHeight = UIScreen.mainScreen.bounds.size.height;
         cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [cancelButton addTarget:self action:@selector(cancelPublishAndDismissView:) forControlEvents:UIControlEventTouchUpInside];
@@ -76,7 +80,7 @@
         [_progressView setProgressTintColor:[UIColor linkBlue]];
         [_progressView setTrackTintColor:[UIColor colorWithWhite:0.96 alpha:1.0]];
         
-        [_progressView setProgress:0];
+        [_progressView setProgress:0.0];
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, statusLabelY, 320, 22)];
         [_statusLabel setText:@"Publishing"];
@@ -89,13 +93,6 @@
         [_timelineTitleLabel setTextAlignment:NSTextAlignmentCenter];
         [_timelineTitleLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:22.0f]];
         [self.view addSubview:_timelineTitleLabel];
-        
-        _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, tipLabelY, 260, 20)];
-        [_tipLabel setText:@"TIP"];
-        [_tipLabel setTextAlignment:NSTextAlignmentCenter];
-        [_tipLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:15.0f]];
-        [_tipLabel setTextColor:[UIColor mutedGray]];
-//        [self.view addSubview:_tipLabel];
         
         _tipMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, tipMessageLabelY, 260, 70)];
         [_tipMessageLabel setNumberOfLines:3];
@@ -122,7 +119,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.backgroundTask = UIBackgroundTaskInvalid;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -152,6 +148,15 @@
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
         self.backgroundTask = UIBackgroundTaskInvalid;
     }
+    
+    [self displayProgress];
+    if(self.isDonePublishing){
+        if(self.failureMessage){
+            [self showFailure];
+        } else {
+            [self showSuccess];
+        }
+    }
 }
 
 -(void)beginPublishingTweets:(NSArray *)tweetData onTimeline:(NSString *)newTimelineTitle Description:(NSString *)newTimelineDescription
@@ -160,6 +165,8 @@
     self.currentIndex = 0;
     self.replyId = NULL;
     self.publishedTweetIds = [[NSMutableArray alloc] initWithCapacity:tweetData.count];
+    self.isDonePublishing = NO;
+    self.failureMessage = nil;
     
     Settings *settings = [Settings getInstance];
 
@@ -183,12 +190,6 @@
     [self createTimeline:newTimelineTitle Description:newTimelineDescription];
 }
 
--(void)displayTimelineError
-{
-    [self showFailure];
-    // display descriptive error message here
-}
-
 -(void)createTimeline:(NSString *)title Description:(NSString *)description
 {
     Settings *settings = [Settings getInstance];
@@ -210,26 +211,25 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"createTimeline HTTP %li", (long)urlResponse.statusCode);
+            NSLog(@"HTTP %li createTimeline", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
         }
         
-        if(jsonError == nil){
+        if(urlResponse.statusCode == 200){
             self.timelineId = [[jsonResponse objectForKey:@"response"] objectForKey:@"timeline_id"];
             NSLog(@"Begin Publishing tweets to %@", self.timelineId);
             
-            [_progressView setProgress:(1.0 / ((tweets.count+1) * 2.0)) animated:YES];
+            [self updateProgress];
             [self publishTweet];
         } else {
             NSLog(@"Error on createTimeline with response %@", jsonResponse);
-            [self displayTimelineError];
+            [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't create a Timeline." waitUntilDone:YES];
         }
     }];
 }
 
 -(void) publishTweet
 {
-    NSLog(@"publishTweets %i/", currentIndex+1);
     if(currentIndex < tweets.count){
         NSURL *postTweetURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
         NSDictionary *postParams = @{
@@ -245,7 +245,7 @@
             NSError *jsonError;
             NSDictionary *jsonResponse;
             if(responseData){
-                NSLog(@"publishTweet %i/ HTTP %ld", currentIndex+1, (long)urlResponse.statusCode);
+                NSLog(@"HTTP %ld publishTweet %i/", (long)urlResponse.statusCode, currentIndex+1);
                 jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
             }
             
@@ -255,13 +255,11 @@
             
             if(urlResponse.statusCode == 200){
                 [self.publishedTweetIds setObject:self.replyId atIndexedSubscript:currentIndex];
+                [self updateProgress];
                 [self performSelectorOnMainThread:@selector(processSuccessfulPublish) withObject:nil waitUntilDone:NO];
-
-//                [self addTweetToTimeline:self.replyId];
-                
             } else {
                 NSLog(@"Error on publishTweets %i/ with response %@", currentIndex+1, jsonResponse);
-                [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:NO];
+                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't publish tweet." waitUntilDone:YES];
                 [self invalidateTaskAndBackground];
             }
         }];
@@ -288,15 +286,15 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"addTweetToTimeline HTTP %li", (long)urlResponse.statusCode);
+            NSLog(@"HTTP %li addTweetToTimeline", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
             
             if(jsonError == nil){
-//                [self performSelectorOnMainThread:@selector(processSuccessfulPublish) withObject:nil waitUntilDone:NO];
+                [self updateProgress];
                 [self performSelectorOnMainThread:@selector(processSuccessfulAddToTimeline) withObject:nil waitUntilDone:NO];
             } else {
                 NSLog(@"Error on addTweetToTimeline %i/ with response %@", currentIndex, jsonResponse);
-                [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:NO];
+                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't add tweet to Timeline." waitUntilDone:YES];
                 [self invalidateTaskAndBackground];
             }
         }
@@ -306,7 +304,6 @@
 - (void)processSuccessfulPublish
 {
     int nextIndex = currentIndex + 1;
-    
     if(nextIndex >= tweets.count){
         // done
         NSArray *reversed = [[self.publishedTweetIds reverseObjectEnumerator] allObjects];
@@ -316,16 +313,7 @@
         [self addTweetToTimeline:[self.publishedTweetIds objectAtIndex:currentIndex]];
     } else {
         // more to go
-        if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
-            // modify the logo
-            NSLog(@"successfulPublishTweet Foreground. Display %i/%i progress", currentIndex+1, tweets.count);
-            [self performSelectorOnMainThread:@selector(updateProgress) withObject:nil waitUntilDone:YES];
-        } else {
-            NSLog(@"successfulPublishTweet Background. Finished %i/. %.1f seconds remaining in background.", currentIndex+1, UIApplication.sharedApplication.backgroundTimeRemaining);
-        }
-        
         currentIndex++;
-        NSLog(@"pub next tweet in...%f", self.duration);
         self.taskTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration target:self selector:@selector(publishTweet) userInfo:nil repeats:NO];
     }
 }
@@ -338,14 +326,6 @@
         // done
         [self publishSuccessTweet];
     } else {
-        if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
-            // modify the logo
-            NSLog(@"successfulAddToTimeline Foreground. Display %i/%i progress", currentIndex+1, tweets.count);
-            [self performSelectorOnMainThread:@selector(updateProgress) withObject:nil waitUntilDone:YES];
-        } else {
-            NSLog(@"successfulAddToTimeline Background. Finished %i/. %.1f seconds remaining in background.", currentIndex+1, UIApplication.sharedApplication.backgroundTimeRemaining);
-        }
-        
         currentIndex++;
         [self addTweetToTimeline:[self.publishedTweetIds objectAtIndex:currentIndex]];
     }
@@ -354,7 +334,6 @@
 
 - (void)publishSuccessTweet
 {
-    NSLog(@"Publishing Success Tweet");
     Settings *settings = [Settings getInstance];
     NSString *urlString = [NSString stringWithFormat:@"www.twitter.com/%@/timelines/%@", settings.account.username, [self.timelineId substringFromIndex:7]];
     
@@ -370,26 +349,20 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"publishSuccessTweet HTTP %ld", (long)urlResponse.statusCode);
+            NSLog(@"HTTP %ld publishSuccessTweet", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
         }
         
         if(urlResponse.statusCode == 200){
             self.replyId = [jsonResponse objectForKey:@"id_str"];
-            
-            if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
-                // modify the logo
-                NSLog(@"PublishSuccessTweet. Foreground. Display complete and hide UI");
-                [self performSelectorOnMainThread:@selector(showSuccess) withObject:nil waitUntilDone:YES];
-            } else {
-                NSLog(@"PublishSuccessTweet. Background. Finished All. %.1f seconds remaining in background.", UIApplication.sharedApplication.backgroundTimeRemaining);
-            }
-            
+        
+            [self updateProgress];
+            [self setSuccess];
             [self invalidateTaskAndBackground];
             
         } else {
             NSLog(@"Error on publishSuccessTweets with response %@", jsonResponse);
-            [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:NO];
+            [self setFailedWithMessage:@"Error with final Timeline tweet."];
             [self invalidateTaskAndBackground];
         }
     }];
@@ -399,7 +372,35 @@
 {
     // 1 createTimeline, tweets.count publishTweets, tweets.count addToTimelines, 1 publishSuccessTweet
     float updates = (1.0 / ((tweets.count * 2) + 2));
-    [_progressView setProgress:(_progressView.progress + updates) animated:YES];
+    self.progressPercentage = self.progressPercentage + updates;
+    NSLog(@"Update %f", self.progressPercentage);
+    
+    if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+        [self performSelectorOnMainThread:@selector(displayProgress) withObject:nil waitUntilDone:YES];
+    }
+}
+
+- (void)displayProgress
+{
+    [_progressView setProgress:self.progressPercentage animated:YES];
+}
+
+- (void)setFailedWithMessage:(NSString *)message;
+{
+    self.isDonePublishing = YES;
+    self.failureMessage = message;
+    
+    if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+        [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:YES];
+    }
+}
+
+- (void)setSuccess
+{
+    self.isDonePublishing = YES;
+    if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+        [self performSelectorOnMainThread:@selector(showSuccess) withObject:nil waitUntilDone:YES];
+    }
 }
 
 - (void)showFailure
@@ -444,8 +445,8 @@
 
 - (void)startNewWriter:(id)sender
 {
-    // start new from scratch!
-    NSLog(@"start a new tweetstorm");
+    [self.delegate startNewWriter];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancelPublishAndDismissView:(id)sender
@@ -470,4 +471,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+//{
+//    PublishViewController *pc = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
+//    return pc;
+//}
+
 @end

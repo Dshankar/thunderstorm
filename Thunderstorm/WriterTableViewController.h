@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PublishViewController.h"
 
-@interface WriterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate>
+@interface WriterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, PublishDataDelegate>
 
 @property (nonatomic, retain) NSMutableArray *tweetData;
 @property (nonatomic, retain) NSMutableArray *tweetNumberOfLines;
-//@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, retain) NSMutableDictionary *timelineData;
 @property (nonatomic, retain) NSMutableDictionary *timelineNumberOfLines;
 @property (nonatomic, retain) UIBarButtonItem* publishButton;

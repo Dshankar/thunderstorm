@@ -13,13 +13,13 @@
 #import "SettingsTableViewController.h"
 #import "WriterHeaderView.h"
 #import "TwitterText.h"
+#import "HomeViewController.h"
 
 @interface WriterTableViewController ()
 @end
 
 @implementation WriterTableViewController
 {
-    NSString* _DEFAULT_TWEET_PROMPT;
     UIResponder* currentlyEditing;
 }
 @synthesize tweetData;
@@ -34,8 +34,6 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        _DEFAULT_TWEET_PROMPT = @"";
-        
         self.publishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(publishTweets:)];
         
         self.disabledPublishButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"publish-disabled.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(disabledPublishTweets:)];
@@ -63,32 +61,44 @@
     [self.tableView setDataSource:self];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
-    self.timelineData = [[NSMutableDictionary alloc] initWithObjects:@[@"",@""] forKeys:@[@"title", @"description"]];
-//    self.timelineData = [[NSMutableDictionary alloc] initWithObjects:@[@"Moby Dick of Keynesian Economics in 2013",@"A story about whales. Exploring the multiverse of awesomeness and crazy stories. Victory. Turing complete."] forKeys:@[@"title", @"description"]];
+    Settings *settings = [Settings getInstance];
+    self.tweetData = [NSMutableArray arrayWithArray:settings.tweetData];
+    self.tweetNumberOfLines = [NSMutableArray arrayWithArray:settings.tweetNumberOfLines];
+    self.timelineData = [NSMutableDictionary dictionaryWithDictionary:settings.timelineData];
+    self.timelineNumberOfLines = [NSMutableDictionary dictionaryWithDictionary:settings.timelineNumberOfLines];
     
-    self.timelineNumberOfLines = [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:1], [NSNumber numberWithInt: 1]] forKeys:@[@"title", @"description"]];
-//    self.timelineNumberOfLines = [[NSMutableDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:2], [NSNumber numberWithInt: 4]] forKeys:@[@"title", @"description"]];
-
-    self.tweetData = [[NSMutableArray alloc] initWithObjects:_DEFAULT_TWEET_PROMPT, nil];
-//    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"Call me Ishmael.", @"Some years ago--never mind how long precisely--having little or no money in my purse, and nothing particular to interest me on shore,", @"I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating", @"the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find", @"myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever", nil];
-
-    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
-//    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], [NSNumber numberWithInt:4], nil];
+    [self assessPublishButtonState];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:longPress];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+-(void)applicationWillResignActive:(NSNotification *)notification
+{
+    Settings *settings = [Settings getInstance];
+    [settings saveTweets:self.tweetData withLines:self.tweetNumberOfLines andTimeline:self.timelineData withLines:self.timelineNumberOfLines];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    WriterHeaderView *headerView = (WriterHeaderView *)[self.tableView headerViewForSection:0];
-    [headerView.titleTextView becomeFirstResponder];
-    currentlyEditing = headerView.titleTextView;
+    Settings *settings = [Settings getInstance];
+    if(settings.account == nil){
+        HomeViewController *home = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
+        home.modalPresentationStyle = UIModalPresentationCurrentContext;
+        home.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:home animated:YES completion:nil];
+    } else {        
+        WriterHeaderView *headerView = (WriterHeaderView *)[self.tableView headerViewForSection:0];
+        [headerView.titleTextView becomeFirstResponder];
+        currentlyEditing = headerView.titleTextView;
+    }
 }
 
 - (void)dealloc
@@ -217,6 +227,7 @@
         PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
     //    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
         publish.view.backgroundColor = [UIColor whiteColor];
+        publish.delegate = self;
         self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
         //    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:publish animated:NO completion:nil];
@@ -252,45 +263,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    /* if(indexPath.section == 0){
-        static NSString *CellIdentifier = @"DescriptionCell";
-        WriterDescriptionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if(cell == nil){
-            cell = [[WriterDescriptionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        }
-
-        [cell.titleTextView setDelegate:self];
-        [cell.titleTextView setText:[self.timelineData objectForKey:@"title"]];
-        
-        [cell.descriptionTextView setDelegate:self];
-        [cell.descriptionTextView setText:[self.timelineData objectForKey:@"description"]];
-        
-        Settings *settings = [Settings getInstance];
-        [cell.username setText:[NSString stringWithFormat:@"@%@", settings.account.username]];
-        
-        UIView *inputAccessory = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-        inputAccessory.backgroundColor = [UIColor whiteColor];
-        
-        UIView *seperator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 1.0)];
-        UIColor *ultraLightGray = [UIColor colorWithRed:(232.0/255) green:(236.0/255) blue:(240.0/255) alpha:1.0];
-        seperator.backgroundColor = ultraLightGray;
-        [inputAccessory addSubview:seperator];
-        
-        UIButton *hideKeyboardButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        hideKeyboardButton.frame = CGRectMake(110, 0, 100, 44);
-        UIImageView *hideKeyboardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40, 11, 20, 20)];
-        [hideKeyboardImageView setImage:[UIImage imageNamed:@"keyboard.png"]];
-        [hideKeyboardButton addSubview:hideKeyboardImageView];
-        [hideKeyboardButton addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventTouchUpInside];
-        [inputAccessory addSubview:hideKeyboardButton];
-        
-        cell.descriptionTextView.inputAccessoryView = inputAccessory;
-        cell.titleTextView.inputAccessoryView = inputAccessory;
-        
-        return cell;
-    } else { */
-    
+{    
     static NSString *CellIdentifier = @"TweetCell";
     WriterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(cell == nil){
@@ -331,23 +304,31 @@
         cell.textView.inputAccessoryView = inputAccessory;
     }
     
-    [cell.textView setText:[self.tweetData objectAtIndex:indexPath.row]];
+    NSString *textData = [self.tweetData objectAtIndex:indexPath.row];
+    if([textData isEqual:@""]){
+        cell.placeholder.hidden = NO;
+    } else {
+        cell.placeholder.hidden = YES;
+    }
+    
+    [cell.textView setText:textData];
     [cell.tweetId setText:[NSString stringWithFormat:@"%d/", indexPath.row + 1]];
     if(indexPath.row + 1 >= 10){
         [cell.tweetId setFrame:CGRectMake(5, 2, 30, 16)];
         UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,30,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
+        [cell.placeholder setFrame:CGRectMake(55, 10, 160, 20)];
     } else {
         [cell.tweetId setFrame:CGRectMake(5, 2, 20, 16)];
         UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:CGRectMake(0,0,20,16)];
         cell.textView.textContainer.exclusionPaths = @[exclusionPath];
+        [cell.placeholder setFrame:CGRectMake(45, 10, 160, 20)];
     }
     
     CGRect tvFrame = [cell.textView frame];
     float lineHeight = cell.textView.font.lineHeight + 3;
     tvFrame.size.height = ([(NSNumber *)[self.tweetNumberOfLines objectAtIndex:indexPath.row] intValue] * lineHeight) + 8;
     [cell.textView setFrame:tvFrame];
-    
     cell.textView.tag = indexPath.row;
     
     return cell;
@@ -656,13 +637,7 @@
             [self.timelineData setObject:tv.text forKey:key];
         }
         
-        NSString *currentTitle = [self.timelineData objectForKey:@"title"];
-        NSString *currentDescription = [self.timelineData objectForKey:@"description"];
-        if([currentTitle isEqualToString:@""] || [currentDescription isEqualToString:@""]){
-            [self.navigationItem setRightBarButtonItem:self.disabledPublishButton];
-        } else {
-            [self.navigationItem setRightBarButtonItem:self.publishButton];
-        }
+        [self assessPublishButtonState];
         
         NSNumber *prevNumberOfLines = [timelineNumberOfLines objectForKey:key];
         if(calcNumberOfLines != prevNumberOfLines.intValue){
@@ -682,7 +657,7 @@
     } else {
         WriterTableViewCell *cell = (WriterTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tv.tag inSection:0]];
 
-        if([tv.text isEqualToString:_DEFAULT_TWEET_PROMPT]){
+        if([tv.text isEqualToString:@""]){
             cell.placeholder.hidden = NO;
         } else {
             cell.placeholder.hidden = YES;
@@ -725,6 +700,31 @@
     snapshot.layer.shadowOpacity = 0.4;
     
     return snapshot;
+}
+
+- (void) startNewWriter
+{
+    self.tweetData = [[NSMutableArray alloc] initWithObjects:@"", nil];
+    self.tweetNumberOfLines = [[NSMutableArray alloc] initWithObjects:[NSNumber numberWithInt:1], nil];
+    [self.timelineNumberOfLines setObject:[NSNumber numberWithInt:1] forKey:@"title"];
+    [self.timelineNumberOfLines setObject:[NSNumber numberWithInt:1] forKey:@"description"];
+    [self.timelineData setObject:@"" forKey:@"title"];
+    [self.timelineData setObject:@"" forKey:@"description"];
+    
+    [self.navigationItem setRightBarButtonItem:self.disabledPublishButton];
+    
+    [self.tableView reloadData];
+}
+
+- (void) assessPublishButtonState
+{
+    NSString *currentTitle = [self.timelineData objectForKey:@"title"];
+    NSString *currentDescription = [self.timelineData objectForKey:@"description"];
+    if([currentTitle isEqualToString:@""] || [currentDescription isEqualToString:@""]){
+        [self.navigationItem setRightBarButtonItem:self.disabledPublishButton];
+    } else {
+        [self.navigationItem setRightBarButtonItem:self.publishButton];
+    }
 }
 
 // ***
