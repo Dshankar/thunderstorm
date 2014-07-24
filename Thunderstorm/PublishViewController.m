@@ -134,7 +134,7 @@
 -(void)enterBackground:(NSNotification *)notification
 {
     self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        NSLog(@"Background expired. Stop background tasks.");
+//        NSLog(@"Background expired. Stop background tasks.");
         if(self.backgroundTask != UIBackgroundTaskInvalid){
             [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
             self.backgroundTask = UIBackgroundTaskInvalid;
@@ -211,13 +211,13 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"HTTP %li createTimeline", (long)urlResponse.statusCode);
+//            NSLog(@"HTTP %li createTimeline", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
         }
         
         if(urlResponse.statusCode == 200){
             self.timelineId = [[jsonResponse objectForKey:@"response"] objectForKey:@"timeline_id"];
-            NSLog(@"Begin Publishing tweets to %@", self.timelineId);
+//            NSLog(@"Begin Publishing tweets to %@", self.timelineId);
             
             [self updateProgress];
             [self publishTweet];
@@ -245,7 +245,7 @@
             NSError *jsonError;
             NSDictionary *jsonResponse;
             if(responseData){
-                NSLog(@"HTTP %ld publishTweet %i/", (long)urlResponse.statusCode, currentIndex+1);
+//                NSLog(@"HTTP %ld publishTweet %i/", (long)urlResponse.statusCode, currentIndex+1);
                 jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
             }
             
@@ -286,7 +286,7 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"HTTP %li addTweetToTimeline", (long)urlResponse.statusCode);
+//            NSLog(@"HTTP %li addTweetToTimeline", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
             
             if(jsonError == nil){
@@ -349,7 +349,7 @@
         NSError *jsonError;
         NSDictionary *jsonResponse;
         if(responseData){
-            NSLog(@"HTTP %ld publishSuccessTweet", (long)urlResponse.statusCode);
+//            NSLog(@"HTTP %ld publishSuccessTweet", (long)urlResponse.statusCode);
             jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
         }
         
@@ -373,7 +373,7 @@
     // 1 createTimeline, tweets.count publishTweets, tweets.count addToTimelines, 1 publishSuccessTweet
     float updates = (1.0 / ((tweets.count * 2) + 2));
     self.progressPercentage = self.progressPercentage + updates;
-    NSLog(@"Update %f", self.progressPercentage);
+//    NSLog(@"Update %f", self.progressPercentage);
     
     if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
         [self performSelectorOnMainThread:@selector(displayProgress) withObject:nil waitUntilDone:YES];
@@ -457,7 +457,7 @@
 
 - (void)invalidateTaskAndBackground
 {
-    NSLog(@"invalidateTaskAndBackground");
+//    NSLog(@"invalidateTaskAndBackground");
     [self.taskTimer invalidate];
     self.taskTimer = nil;
     if(self.backgroundTask != UIBackgroundTaskInvalid){

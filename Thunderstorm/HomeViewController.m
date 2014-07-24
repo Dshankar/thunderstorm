@@ -115,6 +115,8 @@
                 }
             } else {
                 NSLog(@"Not granted access");
+                UIAlertView *noAccess = [[UIAlertView alloc] initWithTitle:@"Grant Access to Twitter" message:@"Visit the Settings app and allow Thunderstorm to access your Twitter accounts." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [noAccess show];
             }
         }];
     } else {
@@ -141,7 +143,7 @@
         ACAccountType *twitterAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         NSArray *twitterAccounts = [self.accountStore accountsWithAccountType:twitterAccountType];
         ACAccount *chosenOne = [twitterAccounts objectAtIndex:buttonIndex];
-        NSLog(@"Selected %@", chosenOne.username);
+//        NSLog(@"Selected %@", chosenOne.username);
         Settings *settings = [Settings getInstance];
         [settings selectAccount:chosenOne];
         

@@ -410,8 +410,6 @@
     [headerView.descriptionTextView setFrame:descFrame];
     [headerView.descriptionPlaceholder setFrame:descPFrame];
     
-//    NSLog(@"Title %@\n TitleP %@\n Desc %@\n DescP %@\n username %@\n settings %@\n publish %@", NSStringFromCGRect(titleFrame), NSStringFromCGRect(titlePFrame), NSStringFromCGRect(descFrame), NSStringFromCGRect(descPFrame), NSStringFromCGRect(usernameFrame), NSStringFromCGRect(settingsFrame), NSStringFromCGRect(publishFrame));
-    
     return headerView;
 }
 
