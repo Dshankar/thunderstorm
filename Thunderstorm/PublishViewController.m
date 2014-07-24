@@ -240,7 +240,7 @@
             [self publishTweet];
         } else {
             NSLog(@"Error on createTimeline with response %@", jsonResponse);
-            [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't create a Timeline." waitUntilDone:YES];
+            [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Couldn't create a Timeline." waitUntilDone:YES];
         }
     }];
 }
@@ -276,7 +276,7 @@
                 [self performSelectorOnMainThread:@selector(processSuccessfulPublish) withObject:nil waitUntilDone:NO];
             } else {
                 NSLog(@"Error on publishTweets %i/ with response %@", currentIndex+1, jsonResponse);
-                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't publish tweet." waitUntilDone:YES];
+                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Couldn't publish tweet." waitUntilDone:YES];
                 [self invalidateTaskAndBackground];
             }
         }];
@@ -311,7 +311,7 @@
                 [self performSelectorOnMainThread:@selector(processSuccessfulAddToTimeline) withObject:nil waitUntilDone:NO];
             } else {
                 NSLog(@"Error on addTweetToTimeline %i/ with response %@", currentIndex, jsonResponse);
-                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Error. Couldn't add tweet to Timeline." waitUntilDone:YES];
+                [self performSelectorOnMainThread:@selector(setFailedWithMessage:) withObject:@"Couldn't add tweet to Timeline." waitUntilDone:YES];
                 [self invalidateTaskAndBackground];
             }
         }
@@ -379,7 +379,7 @@
             
         } else {
             NSLog(@"Error on publishSuccessTweets with response %@", jsonResponse);
-            [self setFailedWithMessage:@"Error with final Timeline tweet."];
+            [self setFailedWithMessage:@"Couldn't publish final Timeline tweet."];
             [self invalidateTaskAndBackground];
         }
     }];
@@ -421,23 +421,27 @@
 - (void)setSuccess
 {
     self.isDonePublishing = YES;
-    if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
-        [self performSelectorOnMainThread:@selector(showSuccess) withObject:nil waitUntilDone:YES];
-    }
     
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"network_action"
                                                           action:@"success_publish"
                                                            label:self.timelineId
                                                            value:nil] build]];
+    
+    if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
+        [self performSelectorOnMainThread:@selector(showSuccess) withObject:nil waitUntilDone:YES];
+    }
 }
 
 - (void)showFailure
 {
     [_progressView setProgressTintColor:[UIColor errorRed]];
     [_progressView setProgress:1.0 animated:YES];
-    [cancelButton setTitle:@"Error" forState:UIControlStateNormal];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton setBackgroundColor:[UIColor errorRed]];
+    
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Oops!" message:self.failureMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
 }
 
 - (void)showSuccess

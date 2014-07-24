@@ -229,23 +229,25 @@
         publishError = [[UIAlertView alloc] initWithTitle:@"Oops!" message:emptyTweetErrorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [publishError show];
     } else {
+        if(currentlyEditing){
+            [currentlyEditing resignFirstResponder];
+            currentlyEditing = nil;
+        }
+        
         PublishViewController *publish = [[PublishViewController alloc] initWithNibName:nil bundle:nil];
-    //    publish.view.backgroundColor = [UIColor colorWithRed:45.0/255 green:48.0/255 blue:54.0/255 alpha:0.95];
         publish.view.backgroundColor = [UIColor whiteColor];
         publish.delegate = self;
         self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:publish animated:NO completion:nil];
-        //    [self.navigationController pushViewController:publish animated:YES];
         
         publish.view.alpha = 0;
         [UIView animateWithDuration:0.5 animations:^{
             publish.view.alpha = 1;
         }];
-
         self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
         
         [publish beginPublishingTweets:self.tweetData onTimeline:timelineTitle Description:timelineDescription];
+        
         id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
                                                              action:@"show_publish"
@@ -526,12 +528,13 @@
 - (void)deleteAllTweets:(id)sender
 {
     UIAlertView *confirm = [[UIAlertView alloc] initWithTitle:@"Delete All?" message:@"Tip: You can swipe left to delete individual tweets" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete All", nil];
+    confirm.tag = -4;
     [confirm show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1){
+    if(buttonIndex == 1 && alertView.tag == -4){
         if(currentlyEditing){
             [currentlyEditing resignFirstResponder];
         }
