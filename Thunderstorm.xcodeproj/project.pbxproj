@@ -89,7 +89,7 @@
 		F90EF2551966378B007211CC /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		F90EF2581966408A007211CC /* screenshot1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = screenshot1.jpg; sourceTree = "<group>"; };
 		F90EF26019677D8D007211CC /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
-		F9ABA9971955AC220019C064 /* thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9ABA9971955AC220019C064 /* Thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9ABA99A1955AC220019C064 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9ABA99C1955AC220019C064 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F9ABA99E1955AC220019C064 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -194,7 +194,7 @@
 		F9ABA9981955AC220019C064 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9ABA9971955AC220019C064 /* thunderstorm.app */,
+				F9ABA9971955AC220019C064 /* Thunderstorm.app */,
 				F9ABA9B21955AC230019C064 /* ThunderstormTests.xctest */,
 			);
 			name = Products;
@@ -339,7 +339,7 @@
 			);
 			name = Thunderstorm;
 			productName = Thunderstorm;
-			productReference = F9ABA9971955AC220019C064 /* thunderstorm.app */;
+			productReference = F9ABA9971955AC220019C064 /* Thunderstorm.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F9ABA9B11955AC230019C064 /* ThunderstormTests */ = {
@@ -574,7 +574,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_NAME = thunderstorm;
+				PRODUCT_NAME = Thunderstorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -592,7 +592,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_NAME = thunderstorm;
+				PRODUCT_NAME = Thunderstorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
