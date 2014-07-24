@@ -228,10 +228,10 @@
 			isa = PBXGroup;
 			children = (
 				F90EF26019677D8D007211CC /* twitter@2x.png */,
-				F90EF24919654336007211CC /* close@2x.png */,
 				F90EF2451964E40E007211CC /* publish@2x.png */,
 				F90384E319760822008F0538 /* publish-disabled@2x.png */,
 				F90384E7197A03C9008F0538 /* new-full@2x.png */,
+				F90EF24919654336007211CC /* close@2x.png */,
 				F90384E119760758008F0538 /* settings-blue@2x.png */,
 				F90EF23C1963EA03007211CC /* keyboard@2x.png */,
 				F90384E519776A3B008F0538 /* twitter-muted@2x.png */,

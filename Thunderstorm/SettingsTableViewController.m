@@ -9,6 +9,7 @@
 #import "SettingsTableViewController.h"
 #import "UIColor+ThunderColors.h"
 #import "WebsiteViewController.h"
+#import "HomeViewController.h"
 #import "Settings.h"
 
 @interface SettingsTableViewController ()
@@ -26,12 +27,18 @@
         [self setTitle:@"Settings"];
         
         settings = [Settings getInstance];
-                
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissView:)];
+        
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"close"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(dismissView:)];
         [self.navigationItem setLeftBarButtonItem:cancelButton];
         
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
 
 - (void)viewDidLoad
@@ -44,13 +51,11 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0]];
+//    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(28.0/255) green:(28.0/255) blue:(28.0/255) alpha:1.0]];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor], NSFontAttributeName: [UIFont fontWithName:@"Lato-Regular" size:20.0f]};
 
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
@@ -167,7 +172,7 @@
             [cell.textLabel setText:@"Photo by Superfamous Studios"];
             break;
         case 3:
-            [cell.textLabel setText:@"Log Out of Twitter"];
+            [cell.textLabel setText:[NSString stringWithFormat:@"Logout of @%@", settings.account.username]];
             [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.textLabel setTextColor:[UIColor errorRed]];
             break;
@@ -212,9 +217,14 @@
             [website loadURLwithString:@"http://superfamous.com/filter/attribution-3.0"];
             [self.navigationController pushViewController:website animated:YES];
             break;
-        } case 3:
-            // TODO logout
+        } case 3: {
+            HomeViewController *home = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
+            home.modalPresentationStyle = UIModalPresentationCurrentContext;
+            home.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            
+            [self presentViewController:home animated:YES completion:nil];
             break;
+        }
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
