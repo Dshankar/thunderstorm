@@ -11,6 +11,7 @@
 #import "Settings.h"
 #import <Social/Social.h>
 #import "DPMeterView.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface PublishViewController ()
 
@@ -126,6 +127,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:@"Publish"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -218,6 +227,14 @@
         if(urlResponse.statusCode == 200){
             self.timelineId = [[jsonResponse objectForKey:@"response"] objectForKey:@"timeline_id"];
 //            NSLog(@"Begin Publishing tweets to %@", self.timelineId);
+            
+            NSString *urlString = [NSString stringWithFormat:@"www.twitter.com/%@/timelines/%@", settings.account.username, [self.timelineId substringFromIndex:7]];
+            
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"network_action"
+                                                                  action:@"create_timeline"
+                                                                   label:urlString
+                                                                   value:nil] build]];
             
             [self updateProgress];
             [self publishTweet];
@@ -390,6 +407,12 @@
     self.isDonePublishing = YES;
     self.failureMessage = message;
     
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"network_action"
+                                                          action:@"failure"
+                                                           label:message
+                                                           value:nil] build]];
+    
     if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
         [self performSelectorOnMainThread:@selector(showFailure) withObject:nil waitUntilDone:YES];
     }
@@ -401,6 +424,12 @@
     if(UIApplication.sharedApplication.applicationState == UIApplicationStateActive){
         [self performSelectorOnMainThread:@selector(showSuccess) withObject:nil waitUntilDone:YES];
     }
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"network_action"
+                                                          action:@"success_publish"
+                                                           label:self.timelineId
+                                                           value:nil] build]];
 }
 
 - (void)showFailure
@@ -432,6 +461,12 @@
 
 - (void)viewOnTwitter:(id)sender
 {
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                          action:@"view_in_twitter"
+                                                           label:@"publish"
+                                                           value:nil] build]];
+    
     if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]])
     {
         NSString *urlString = [NSString stringWithFormat:@"twitter://status?id=%@", self.replyId];
@@ -445,6 +480,12 @@
 
 - (void)startNewWriter:(id)sender
 {
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                          action:@"start_new_writer"
+                                                           label:@"publish"
+                                                           value:nil] build]];
+    
     [self.delegate startNewWriter];
     [self dismissViewControllerAnimated:YES completion:nil];
 }

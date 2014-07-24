@@ -7,6 +7,7 @@
 //
 
 #import "WebsiteViewController.h"
+#import "GAITrackedViewController.h"
 
 @interface WebsiteViewController ()
 
@@ -42,6 +43,12 @@
     [self.navigationController.navigationBar setTranslucent:NO];
 
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor blackColor], NSFontAttributeName: [UIFont fontWithName:@"Lato-Regular" size:20.0f]} forState:UIControlStateNormal];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.screenName = @"Website";
 }
 
 - (void)didReceiveMemoryWarning

@@ -11,6 +11,7 @@
 #import "WebsiteViewController.h"
 #import "HomeViewController.h"
 #import "Settings.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface SettingsTableViewController ()
 
@@ -59,6 +60,14 @@
 
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:@"Settings"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)dismissView:(id)sender
@@ -186,6 +195,12 @@
     switch(indexPath.section)
     {
         case 0: {
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                                  action:@"set_duration"
+                                                                   label:@"settings"
+                                                                   value:[NSNumber numberWithInt:indexPath.row]] build]];
+            
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if(cell.accessoryType != UITableViewCellAccessoryCheckmark){
                 [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -200,6 +215,12 @@
             break;
         } case 1: {
             if(indexPath.row == 0){
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                                      action:@"show_twitter"
+                                                                       label:@"settings"
+                                                                       value:nil] build]];
+                
                 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]]){
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=dshankar"]];
                 } else {
@@ -207,17 +228,35 @@
                 }
                 
             } else {
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                                      action:@"show_github"
+                                                                       label:@"settings"
+                                                                       value:nil] build]];
+                
                 WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
                 [website loadURLwithString:@"http://github.com/Dshankar/thunderstorm"];
                 [self.navigationController pushViewController:website animated:YES];
             }
             break;
         } case 2: {
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                                  action:@"show_photo_source"
+                                                                   label:@"settings"
+                                                                   value:nil] build]];
+            
             WebsiteViewController *website = [[WebsiteViewController alloc] initWithNibName:nil bundle:nil];
             [website loadURLwithString:@"http://superfamous.com/filter/attribution-3.0"];
             [self.navigationController pushViewController:website animated:YES];
             break;
         } case 3: {
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                                  action:@"logout"
+                                                                   label:@"settings"
+                                                                   value:nil] build]];
+            
             HomeViewController *home = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
             home.modalPresentationStyle = UIModalPresentationCurrentContext;
             home.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

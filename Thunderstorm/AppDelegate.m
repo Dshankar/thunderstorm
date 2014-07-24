@@ -43,6 +43,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self.window makeKeyAndVisible];
+    
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-53146108-1"];
+    
     return YES;
 }
 

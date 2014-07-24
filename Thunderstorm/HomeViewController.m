@@ -12,6 +12,7 @@
 #import <Accounts/Accounts.h>
 #import "UIColor+ThunderColors.h"
 #import "Settings.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface HomeViewController ()
 @property (nonatomic) ACAccountStore *accountStore;
@@ -97,6 +98,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:@"Home"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)loginWithTwitter:(id)sender

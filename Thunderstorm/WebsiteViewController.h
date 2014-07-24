@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WebsiteViewController : UIViewController <UIWebViewDelegate>
+@interface WebsiteViewController : GAITrackedViewController <UIWebViewDelegate>
 
 -(void)loadURLwithString:(NSString *)url;
 

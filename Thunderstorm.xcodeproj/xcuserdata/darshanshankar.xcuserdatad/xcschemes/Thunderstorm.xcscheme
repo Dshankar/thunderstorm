@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9ABA9961955AC220019C064"
-               BuildableName = "Thunderstorm.app"
+               BuildableName = "thunderstorm.app"
                BlueprintName = "Thunderstorm"
                ReferencedContainer = "container:Thunderstorm.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F9ABA9961955AC220019C064"
-            BuildableName = "Thunderstorm.app"
+            BuildableName = "thunderstorm.app"
             BlueprintName = "Thunderstorm"
             ReferencedContainer = "container:Thunderstorm.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F9ABA9961955AC220019C064"
-            BuildableName = "Thunderstorm.app"
+            BuildableName = "thunderstorm.app"
             BlueprintName = "Thunderstorm"
             ReferencedContainer = "container:Thunderstorm.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F9ABA9961955AC220019C064"
-            BuildableName = "Thunderstorm.app"
+            BuildableName = "thunderstorm.app"
             BlueprintName = "Thunderstorm"
             ReferencedContainer = "container:Thunderstorm.xcodeproj">
          </BuildableReference>

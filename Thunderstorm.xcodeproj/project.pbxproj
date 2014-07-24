@@ -49,6 +49,10 @@
 		F9BA03D5195C1FF00064F12E /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9BA03D3195C1FF00064F12E /* Lato-Light.ttf */; };
 		F9BA03D7195C2AF10064F12E /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9BA03D6195C2AF10064F12E /* Lato-Regular.ttf */; };
 		F9BA03D9195C2CFD0064F12E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9BA03D8195C2CFD0064F12E /* Accounts.framework */; };
+		F9F110D9198108B9001AEC63 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F110D8198108B9001AEC63 /* libGoogleAnalyticsServices.a */; };
+		F9F110DB198108C9001AEC63 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F110DA198108C9001AEC63 /* CoreData.framework */; };
+		F9F110DD198108E0001AEC63 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F110DC198108E0001AEC63 /* SystemConfiguration.framework */; };
+		F9F110DF198108E8001AEC63 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F110DE198108E8001AEC63 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +89,7 @@
 		F90EF2551966378B007211CC /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		F90EF2581966408A007211CC /* screenshot1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = screenshot1.jpg; sourceTree = "<group>"; };
 		F90EF26019677D8D007211CC /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
-		F9ABA9971955AC220019C064 /* Thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9ABA9971955AC220019C064 /* thunderstorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thunderstorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9ABA99A1955AC220019C064 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9ABA99C1955AC220019C064 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F9ABA99E1955AC220019C064 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -121,6 +125,20 @@
 		F9BA03D3195C1FF00064F12E /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		F9BA03D6195C2AF10064F12E /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		F9BA03D8195C2CFD0064F12E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		F9F110CE1981084A001AEC63 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		F9F110CF1981084A001AEC63 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		F9F110D41981084A001AEC63 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		F9F110D51981084A001AEC63 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		F9F110D61981084A001AEC63 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		F9F110D71981084A001AEC63 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		F9F110D8198108B9001AEC63 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		F9F110DA198108C9001AEC63 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F9F110DC198108E0001AEC63 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F9F110DE198108E8001AEC63 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		F9F110E019811220001AEC63 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		F9F110E119811220001AEC63 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		F9F110E219811220001AEC63 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		F9F110E319811220001AEC63 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,11 +146,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9F110DF198108E8001AEC63 /* libz.dylib in Frameworks */,
+				F9F110DD198108E0001AEC63 /* SystemConfiguration.framework in Frameworks */,
+				F9F110DB198108C9001AEC63 /* CoreData.framework in Frameworks */,
 				F9BA03D9195C2CFD0064F12E /* Accounts.framework in Frameworks */,
 				F9BA03CF195B95590064F12E /* Social.framework in Frameworks */,
 				F9ABA99D1955AC220019C064 /* CoreGraphics.framework in Frameworks */,
 				F9ABA99F1955AC220019C064 /* UIKit.framework in Frameworks */,
 				F9ABA99B1955AC220019C064 /* Foundation.framework in Frameworks */,
+				F9F110D9198108B9001AEC63 /* libGoogleAnalyticsServices.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,7 +194,7 @@
 		F9ABA9981955AC220019C064 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9ABA9971955AC220019C064 /* Thunderstorm.app */,
+				F9ABA9971955AC220019C064 /* thunderstorm.app */,
 				F9ABA9B21955AC230019C064 /* ThunderstormTests.xctest */,
 			);
 			name = Products;
@@ -181,6 +203,10 @@
 		F9ABA9991955AC220019C064 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F9F110DE198108E8001AEC63 /* libz.dylib */,
+				F9F110DC198108E0001AEC63 /* SystemConfiguration.framework */,
+				F9F110DA198108C9001AEC63 /* CoreData.framework */,
+				F9F110D8198108B9001AEC63 /* libGoogleAnalyticsServices.a */,
 				F9BA03D8195C2CFD0064F12E /* Accounts.framework */,
 				F9BA03CE195B95590064F12E /* Social.framework */,
 				F9ABA99A1955AC220019C064 /* Foundation.framework */,
@@ -216,6 +242,7 @@
 				F90EF24F19661E52007211CC /* SettingsTableViewController.m */,
 				F90EF25119663207007211CC /* WebsiteViewController.h */,
 				F90EF25219663207007211CC /* WebsiteViewController.m */,
+				F9F110CD19810824001AEC63 /* GA */,
 				F90384BE196B6DB3008F0538 /* DPMeterView */,
 				F9BA03BB195A52720064F12E /* Twitter-Text-Objc */,
 				F90EF2541966378B007211CC /* Settings.h */,
@@ -278,6 +305,23 @@
 			name = "Twitter-Text-Objc";
 			sourceTree = "<group>";
 		};
+		F9F110CD19810824001AEC63 /* GA */ = {
+			isa = PBXGroup;
+			children = (
+				F9F110CE1981084A001AEC63 /* GAI.h */,
+				F9F110CF1981084A001AEC63 /* GAIDictionaryBuilder.h */,
+				F9F110D41981084A001AEC63 /* GAIFields.h */,
+				F9F110D51981084A001AEC63 /* GAILogger.h */,
+				F9F110D61981084A001AEC63 /* GAITrackedViewController.h */,
+				F9F110D71981084A001AEC63 /* GAITracker.h */,
+				F9F110E019811220001AEC63 /* GAIEcommerceFields.h */,
+				F9F110E119811220001AEC63 /* GAIEcommerceProduct.h */,
+				F9F110E219811220001AEC63 /* GAIEcommerceProductAction.h */,
+				F9F110E319811220001AEC63 /* GAIEcommercePromotion.h */,
+			);
+			name = GA;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -295,7 +339,7 @@
 			);
 			name = Thunderstorm;
 			productName = Thunderstorm;
-			productReference = F9ABA9971955AC220019C064 /* Thunderstorm.app */;
+			productReference = F9ABA9971955AC220019C064 /* thunderstorm.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F9ABA9B11955AC230019C064 /* ThunderstormTests */ = {
@@ -325,6 +369,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Darshan Shankar";
 				TargetAttributes = {
+					F9ABA9961955AC220019C064 = {
+						DevelopmentTeam = 2B3L6C7XL3;
+					};
 					F9ABA9B11955AC230019C064 = {
 						TestTargetID = F9ABA9961955AC220019C064;
 					};
@@ -519,10 +566,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
 				INFOPLIST_FILE = "Thunderstorm/Thunderstorm-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = thunderstorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -532,10 +584,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Thunderstorm/Thunderstorm-Prefix.pch";
 				INFOPLIST_FILE = "Thunderstorm/Thunderstorm-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = thunderstorm;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

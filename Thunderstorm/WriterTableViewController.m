@@ -14,6 +14,7 @@
 #import "WriterHeaderView.h"
 #import "TwitterText.h"
 #import "HomeViewController.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface WriterTableViewController ()
 @end
@@ -99,6 +100,10 @@
         [headerView.titleTextView becomeFirstResponder];
         currentlyEditing = headerView.titleTextView;
     }
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:@"Writer"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)dealloc
@@ -241,11 +246,22 @@
         self.navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
         
         [publish beginPublishingTweets:self.tweetData onTimeline:timelineTitle Description:timelineDescription];
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                             action:@"show_publish"
+                                                              label:@"writer"
+                                                              value:[NSNumber numberWithInteger:tweetData.count]] build]];
     }
 }
 
 - (void) displaySettings:(id)sender
 {
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"ui_action"
+                                                          action:@"show_settings"
+                                                           label:@"writer"
+                                                           value:nil] build]];
+    
     SettingsTableViewController *settings = [[SettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *settingsNav = [[UINavigationController alloc] initWithRootViewController:settings];
     [self presentViewController:settingsNav animated:YES completion:nil];
